@@ -1,0 +1,40 @@
+#video #overlays .overlay {
+    position: absolute;
+    top: 0; right: 0;
+    height: 100%;
+    padding: 0 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#video #overlays .overlay::before {
+    content: "";
+
+    position: absolute;
+    top: 50%; left: 100%;
+
+    transform: translate(-50%, -50%);
+
+    animation: overlaybefore 1s ease-in forwards;
+
+    aspect-ratio: 1;
+    border-radius: 50%;
+
+}
+
+@keyframes overlaybefore {
+    0%{height: 0%; background-color: rgba(248, 248, 248, .3);}
+    100%{height: 200%; background-color: rgba(248, 248, 248, .0);}
+}
+
+#video #overlays .overlay i {width: max-content; animation: overlayp 1s forwards;}
+#video #overlays .overlay p {width: max-content; animation: overlayp 1s forwards;}
+
+@keyframes overlayp {
+    0%{opacity: 0;}
+    50%{opacity: 1;}
+    100%{opacity: 0;}
+}
