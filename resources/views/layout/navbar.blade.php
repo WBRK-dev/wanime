@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md bg-body-tertiary">
+{{-- <nav class="navbar navbar-expand-md bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ $_ENV["APP_URL"] }}/">WAnime</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,8 +6,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                {{-- <li class="nav-item"><a class="nav-link {{ (Request::is('subscriptions') ? 'active' : '') }}" aria-current="page" href="{{ $_ENV["APP_URL"] }}/subscriptions">Subscriptions</a></li> --}}
-                {{-- <li class="nav-item"><a class="nav-link {{ (Request::is('anime') ? 'active' : '') }}" aria-current="page" href="{{ $_ENV["APP_URL"] }}/">Anime</a></li> --}}
+                <li class="nav-item"><a class="nav-link {{ (Request::is('subscriptions') ? 'active' : '') }}" aria-current="page" href="{{ $_ENV["APP_URL"] }}/subscriptions">Subscriptions</a></li>
+                <li class="nav-item"><a class="nav-link {{ (Request::is('anime') ? 'active' : '') }}" aria-current="page" href="{{ $_ENV["APP_URL"] }}/">Anime</a></li>
             </ul>
             <form class="d-flex me-md-2 mb-2 mb-md-0" role="search" action="{{ $_ENV["APP_URL"] }}/search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
@@ -46,4 +46,27 @@
             @endif
         </div>
     </div>
+</nav> --}}
+
+<nav class="w-header">
+    <a href="{{config("app.url")}}/" class="logo">WAnime</a>
+
+    <div class="right">
+
+        <div class="account" onclick="toggleAccountDropdown()">
+            <p class="name">WBR_K</p>
+            <i class="fi fi-sr-caret-down"></i>
+        </div>
+    
+    </div>
 </nav>
+
+<div class="account-dropdown">
+                
+    <div class="dropdown-item">Watchlist</div>
+    <div class="dropdown-item disabled">My Requests</div>
+    <div class="dropdown-item separator"></div>
+    <div class="dropdown-item">Watchlist</div>
+    <div class="dropdown-item disabled">My Requests</div>
+
+</div>

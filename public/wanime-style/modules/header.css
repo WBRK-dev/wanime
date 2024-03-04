@@ -1,0 +1,78 @@
+.w-header {
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 1rem;
+    height: 60px;
+    background-color: var(--bs-tertiary-bg);
+}
+
+.w-header .logo {
+    color: var(--bs-body-color);
+    font-size: 22px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.w-header .right {
+    margin-left: auto;
+}
+
+.w-header .account {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    height: 60px;
+    padding: 0 1rem;
+
+    position: relative;
+
+    cursor: pointer;
+}
+.w-header .account:hover {
+    background-color: var(--tertiary-hover-bg);
+}
+
+.account-dropdown {
+    display: none;
+
+    position: absolute;
+    top: 60px; right: 0;
+
+    width: min(300px, 100%);
+    padding: .5rem 0;
+    box-sizing: border-box;
+
+    background-color: var(--bs-tertiary-bg);
+    border-bottom-left-radius: .5rem;
+}
+.account-dropdown.show {
+    display: block;
+}
+
+.account-dropdown .dropdown-item {
+    padding: .25rem .5rem;
+
+    cursor: pointer;
+}
+.account-dropdown .dropdown-item:not(.separator):hover {
+    background-color: var(--tertiary-hover-bg);
+}
+.account-dropdown .dropdown-item.active {background-color: var(--bs-primary);}
+.account-dropdown .dropdown-item.separator {
+    height: 27px;
+    box-sizing: border-box;
+    cursor: default;
+}
+.account-dropdown .dropdown-item.separator::before {
+    content: "";
+
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: 1px solid var(--bs-border-color);
+    width: calc(100% - 20px);
+
+    box-sizing: border-box;
+}

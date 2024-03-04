@@ -1,0 +1,7 @@
+body {
+
+}
+
+body[data-bs-theme="dark"] {
+    --tertiary-hover-bg: #6b6e72;
+}

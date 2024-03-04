@@ -3,7 +3,7 @@
 @section("body")
 
 <div class="p-2">
-    <div id="animespotlight" class="carousel slide mb-4" style="margin-top: -.5rem; margin-left: -.5rem; width: calc(100% + 1rem);" data-bs-ride="carousel">
+    {{-- <div id="animespotlight" class="carousel slide mb-4" style="margin-top: -.5rem; margin-left: -.5rem; width: calc(100% + 1rem);" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" class="active bg-light" data-bs-target="#animespotlight" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1"></button>
             @for ($i = 0; $i < count($spotlight) - 1; $i++)
@@ -32,16 +32,16 @@
             <span class="carousel-control-next-icon" style="filter: unset;" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
-    </div>
+    </div> --}}
 
     {{-- <div class="alert alert-danger d-flex gap-2 align-items-center" style="margin-top: -1rem;" role="alert">
         <i class="fi fi-sr-diamond-exclamation mt-0"></i>
         <p class="m-0">The provider api is outdated. Update the provider api or the episodes can not be decrypted.</p>
-    </div>       --}}
+    </div> --}}
     
     @auth
         <div class="d-flex align-items-center mb-2">
-            <h4 class="m-0">Watching</h4>
+            <h4 class="fs-5">Watching</h4>
             <a href="{{ $_ENV["APP_URL"] }}/watchlist" class="ms-auto mb-0">See All</a>
         </div>
 
@@ -68,7 +68,7 @@
     @endauth
 
 
-    <h4>New Episodes</h4>
+    <h4 class="fs-5 mb-2">New Episodes</h4>
     <div id="animegrid" class="d-grid column-gap-2 mb-4 overflow-hidden" style="--rows-2: {{ count($latest) > 4 ? "1fr 1fr" : "1fr" }}; --rows-3: {{ count($latest) > 4 ? "1fr 1fr 1fr" : (count($latest) > 2 ? "1fr 1fr" : "1fr") }};">
         @foreach ($latest as $anime)
             @include("modules.animecard", [
@@ -80,10 +80,7 @@
         @endforeach
     </div>
 
-    <h4>Popular</h4>
-    {{-- <div class="d-grid" style="place-items: center; height: 100px;">
-        <p>Unavailable</p>
-    </div> --}}
+    <h4 class="fs-5 mb-2">Popular</h4>
     <div id="animegrid" class="d-grid column-gap-2 mb-4 overflow-hidden" style="--rows-2: {{ count($popular) > 4 ? "1fr 1fr" : "1fr" }}; --rows-3: {{ count($popular) > 4 ? "1fr 1fr 1fr" : (count($popular) > 2 ? "1fr 1fr" : "1fr") }};">
         @foreach ($popular as $anime)
             @include("modules.animecard", [
@@ -98,7 +95,7 @@
 
     <div class="pt-4 bg-body-tertiary mb-4" style="margin-left: -.5rem; width: calc(100% + 1rem);">
     
-        <h4 class="m-0 ms-2">Recent Reviews</h4>
+        <h4 class="m-0 ms-2 fs-5">Recent Reviews</h4>
 
         <div class="d-flex gap-2 mt-2 px-2 pb-4 overflow-x-auto">
 
@@ -132,7 +129,7 @@
     </div>
 
 
-    <h4>Trending</h4>
+    <h4 class="fs-5 mb-2">Trending</h4>
     <div id="animegrid" class="d-grid column-gap-2 mb-4 overflow-hidden" style="--rows-2: {{ count($trending) > 4 ? "1fr 1fr" : "1fr" }}; --rows-3: {{ count($trending) > 4 ? "1fr 1fr 1fr" : (count($trending) > 2 ? "1fr 1fr" : "1fr") }};">
         @foreach ($trending as $anime)
             @include("modules.animecard", [

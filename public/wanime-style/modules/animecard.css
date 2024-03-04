@@ -1,0 +1,35 @@
+.animecard {
+    color: var(--bs-body-color);
+    text-decoration: none;
+
+    width: 100%;
+    margin-top: .5rem;
+
+    position: relative;
+}
+
+/*  d-flex justify-content-center gap-1 mt-1 me-1 mb-0 position-absolute top-0 start-50 translate-middle-x */
+
+.animecard .episodes {
+    display: flex;
+    justify-content: center;
+    gap: .25rem;
+
+    margin: .25rem 0 0 0;
+
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+}
+
+/* d-flex align-items-center gap-2 fs-6 m-0 px-2 py-1 bg-body-secondary */
+/* d-flex align-items-center gap-2 fs-6 m-0 px-2 py-1 bg-body-tertiary */
+.animecard .episodes .episode {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 17px;
+    padding: .25rem .5rem;
+
+    background-color: var(--bs-secondary-bg);
+}

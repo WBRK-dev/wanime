@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
+
+@import url("colors.css");
+@import url("modules/utils.css");
+
+@import url("modules/header.css");
+@import url("modules/animecard.css");
+
+* {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    user-select: none;
+}
+
+body {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+}

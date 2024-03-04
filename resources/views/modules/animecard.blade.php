@@ -1,4 +1,4 @@
-<a href="#" class="animecard">
+<a href="{{config("app.url")}}{{ isset($path) ? $path : "/anime?id=" . $id }}" class="animecard">
     <img src="{{ $poster }}" class="w-100 rounded" alt="Image" style="aspect-ratio: 1/1.36; object-fit: cover;">
     <div class="py-2">
         <h5 class="fs-6">{{ $title }}</h5>
