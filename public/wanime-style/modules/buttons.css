@@ -1,0 +1,28 @@
+.bigbutton {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+
+    font-size: 16px;
+    text-decoration: none;
+    color: #fff;
+
+    padding: .5rem 1rem;
+    border-radius: 50px;
+
+    border: none;
+    background-color: transparent;
+
+    cursor: pointer;
+    transition: background-color 250ms;
+}
+
+.bigbutton.btn-primary {background-color: var(--bs-primary);}
+.bigbutton.btn-secondary {background-color: var(--bs-secondary);}
+.bigbutton.btn-success {background-color: var(--bs-success);}
+.bigbutton.btn-danger {background-color: var(--bs-danger);}
+
+.bigbutton.btn-primary:hover {background-color: var(--primary-hover-subtle-bg);}
+.bigbutton.btn-secondary:hover {background-color: var(--secondary-hover-subtle-bg);}
+
+.bigbutton i.fi {display: grid;}

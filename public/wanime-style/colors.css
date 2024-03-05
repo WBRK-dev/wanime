@@ -1,5 +1,6 @@
 body {
-
+    --primary-hover-subtle-bg: #0a62e6;
+    --secondary-hover-subtle-bg: #5f676e;
 }
 
 body[data-bs-theme="dark"] {

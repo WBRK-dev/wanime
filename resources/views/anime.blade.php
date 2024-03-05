@@ -22,11 +22,11 @@
                 <p class="d-flex align-items-center gap-2 m-0 px-2 py-1 bg-body-tertiary rounded-end"><i class="fi fi-sr-microphone"></i> {{ $results["anime"]["info"]["stats"]["episodes"]["dub"] ?? 0 }}</p>
             </div>
 
-            <h2 class="mt-3 mb-3">{{ $results["anime"]["info"]["name"] }}</h2>
+            <h2 class="mt-3 mb-3 selectable">{{ $results["anime"]["info"]["name"] }}</h2>
 
             <div class="d-flex gap-2 mb-4">
-                <a href="{{ $_ENV["APP_URL"] }}/watch?id={{ $results["anime"]["info"]["id"] }}" class="btn btn-primary">Watch</a>
-                @auth
+                <a href="{{ $_ENV["APP_URL"] }}/watch?id={{ $results["anime"]["info"]["id"] }}" class="bigbutton btn-primary"><i class="fi fi-sr-play-circle"></i> Watch</a>
+                {{-- @auth
                     <div class="btn-group dropdown-left">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ $watchlist["label"] }}
@@ -43,7 +43,19 @@
                             <li><button onclick="removeButton(this)" class="dropdown-item {{ ($watchlist["value"] === "") ? "disabled" : "" }}" href="#">Remove</button></li>
                         </ul>
                     </div>
-                @endauth
+                @endauth --}}
+                <div class="watchlist-dropdown">
+                    <button class="bigbutton btn-secondary"><span>{{ $watchlist["label"] }}</span><i class="fi fi-sr-caret-down"></i></button>
+                    <div class="dropdown">
+                        <button class="dropdown-item {{ ($watchlist["value"] === "watching") ? "active" : "" }}" data-dropdown-type="watching">Watching</button>
+                        <button class="dropdown-item {{ ($watchlist["value"] === "planning") ? "active" : "" }}" data-dropdown-type="planning">Planning</button>
+                        <button class="dropdown-item {{ ($watchlist["value"] === "completed") ? "active" : "" }}" data-dropdown-type="completed">Completed</button>
+                        <button class="dropdown-item {{ ($watchlist["value"] === "paused") ? "active" : "" }}" data-dropdown-type="paused">Paused</button>
+                        <button class="dropdown-item {{ ($watchlist["value"] === "dropped") ? "active" : "" }}" data-dropdown-type="dropped">Dropped</button>
+                        <div class="dropdown-item separator"></div>
+                        <button class="dropdown-item" data-dropdown-type="remove">Remove</button>
+                    </div>
+                </div>
             </div>
 
             <div class="d-flex flex-wrap justify-content-center gap-2 px-2" style="width: min(1000px, 100%);">
@@ -56,7 +68,7 @@
         </div>
 
         <div class="p-2">
-            <h4>Related Anime</h4>
+            <h4 class="fs-5 mb-2">Related Anime</h4>
             <div id="animegrid" class="d-grid column-gap-2 mb-4 overflow-hidden" style="--rows-2: {{ count($results["relatedAnimes"]) > 4 ? "1fr 1fr" : "1fr" }}; --rows-3: {{ count($results["relatedAnimes"]) > 4 ? "1fr 1fr 1fr" : (count($results["relatedAnimes"]) > 2 ? "1fr 1fr" : "1fr") }};">
                 @foreach ($results["relatedAnimes"] as $anime)
                     @include("modules.animecard", [
@@ -68,7 +80,7 @@
                 @endforeach
             </div>
 
-            <h4>Recommended Anime</h4>
+            <h4 class="fs-5 mb-2">Recommended Anime</h4>
             <div id="animegrid" class="d-grid column-gap-2 mb-4 overflow-hidden" style="--rows-2: {{ count($results["recommendedAnimes"]) > 4 ? "1fr 1fr" : "1fr" }}; --rows-3: {{ count($results["recommendedAnimes"]) > 4 ? "1fr 1fr 1fr" : (count($results["recommendedAnimes"]) > 2 ? "1fr 1fr" : "1fr") }};">
                 @foreach ($results["recommendedAnimes"] as $anime)
                     @include("modules.animecard", [
@@ -84,52 +96,11 @@
 
     </div>
 
-
-    <script>
-
-        function apiCall(state) {
-            fetch(`{{ $_ENV["APP_URL"] }}/api/watchlist/{{ $results["anime"]["info"]["id"] }}`, {
-                method: "PUT",
-                body: JSON.stringify({
-                    "_token": "{{ csrf_token() }}",
-                    "status": state,
-                    "anime": {
-                        "title": "{{ $results["anime"]["info"]["name"] }}",
-                        "image": "{{ $results["anime"]["info"]["poster"] }}"
-                    }
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-        }
-
-        function dropdownHandler(elem, state) {
-
-            $(elem).parent().parent().children().children().removeClass("active");
-            $(elem).parent().parent().children().children().removeClass("disabled");
-            $(elem).parent().parent().parent().find("button").first().text($(elem).text());
-            $(elem).addClass("active");
-
-            apiCall(state);
-
-        }
-
-        function removeButton(elem) {
-
-            $(elem).parent().parent().children().children().removeClass("active");
-            $(elem).parent().parent().parent().find("button").first().text("WatchList");
-            $(elem).addClass("disabled")
-
-            apiCall("remove");
-
-        }
-
-    </script>
 @endsection
 
 @section("head")
 
+    <script src="{{config("app.url")}}/wanime-style/modules-js/watchlist-dropdown.js"></script>
     <style>
 
         #animegrid {
@@ -152,5 +123,25 @@
         }
 
     </style>
+    <script>
+
+        function watchlistStatusUpdate(state) {
+            fetch(`{{ $_ENV["APP_URL"] }}/api/watchlist/{{ $results["anime"]["info"]["id"] }}`, {
+                method: "PUT",
+                body: JSON.stringify({
+                    "_token": "{{ csrf_token() }}",
+                    "status": state,
+                    "anime": {
+                        "title": "{{ $results["anime"]["info"]["name"] }}",
+                        "image": "{{ $results["anime"]["info"]["poster"] }}"
+                    }
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        }
+
+    </script>
     
 @endsection

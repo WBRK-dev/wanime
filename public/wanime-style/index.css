@@ -7,6 +7,8 @@
 @import url("modules/animecard.css");
 @import url("modules/carousel.css");
 @import url("modules/episodearray.css");
+@import url("modules/buttons.css");
+@import url("modules/watchlist-dropdown.css");
 
 * {
     margin: 0;
