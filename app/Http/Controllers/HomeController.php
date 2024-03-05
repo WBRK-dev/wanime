@@ -34,6 +34,7 @@ class HomeController extends Controller
         }
 
         $response = $response->json();
+        // dd($response);
 
         $reviews = Star::join('anime', 'stars.animeId', '=', 'anime.animeId')
         ->join('users', 'stars.userId', '=', 'users.id')

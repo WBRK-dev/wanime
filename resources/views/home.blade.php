@@ -34,10 +34,45 @@
         </button>
     </div> --}}
 
-    {{-- <div class="alert alert-danger d-flex gap-2 align-items-center" style="margin-top: -1rem;" role="alert">
-        <i class="fi fi-sr-diamond-exclamation mt-0"></i>
-        <p class="m-0">The provider api is outdated. Update the provider api or the episodes can not be decrypted.</p>
-    </div> --}}
+    <div id="animecarousel" class="w-carousel mb-4" style="margin-left: -.5rem; margin-top: -.5rem; width: calc(100% + 1rem);">
+        <div class="items">
+
+            @foreach ($spotlight as $anime)
+                <div class="item {{ (((int) $anime["rank"]) === 1) ? "slide-active" : ((((int) $anime["rank"]) === 2) ? "slide-next" : "") }}" data-slide-index="{{ ((int) $anime["rank"]) - 1 }}">
+                    <img src="{{ $anime["poster"] }}" alt="Spotlight Image for {{ $anime["name"] }}">
+                    <div class="details">
+                        <p class="text-body-secondary">#{{ $anime["rank"] }} Spotlight</p>
+                        <p class="title mb-2 selectable">{{ $anime["name"] }}</p>
+                        <div class="d-flex gap-2">
+                            <div class="w-episodes other-info">
+                                @foreach ($anime["otherInfo"] as $info)
+                                    <div class="episode bg-body-tertiary">{{ $info }}</div>
+                                @endforeach
+                            </div>
+                            <div class="w-episodes">
+                                <div class="episode bg-body-secondary"><i class="fi fi-sr-subtitles"></i>{{ $anime["episodes"]["sub"] ?? 0 }}</div>
+                                <div class="episode bg-body-tertiary"><i class="fi fi-sr-microphone"></i>{{ $anime["episodes"]["dub"] ?? 0 }}</div>
+                            </div>
+                        </div>
+                        <p class="description text-body-secondary mt-2">{{ $anime["description"] }}</p>
+
+                        <div class="d-flex gap-2 mt-2">
+
+                            <a href="{{config("app.url")}}/watch?id={{$anime["id"]}}" class="watch-button"><i class="fi-sr-play-circle"></i>Watch Now</a>
+                            <a href="{{config("app.url")}}/anime?id={{$anime["id"]}}" class="watch-button details-button"><i class="fi-sr-info"></i>Details</a>
+
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
+
+        <div class="control">
+            {{-- <button class="control-button" onclick="wCarouselSlidePrev()"><i class="fi-sr-angle-small-left"></i></button> --}}
+            <button class="control-button" onclick="wCarouselSlideNext()"><i class="fi-sr-angle-small-right"></i></button>
+        </div>
+    </div>
     
     @auth
         <div class="d-flex align-items-center mb-2">
@@ -147,6 +182,7 @@
 
 @section("head")
     
+    <script src="{{config("app.url")}}/wanime-style/modules-js/carousel.js"></script>
     <style>
         #animegrid {
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 

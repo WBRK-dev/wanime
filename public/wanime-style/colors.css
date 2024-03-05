@@ -3,5 +3,6 @@ body {
 }
 
 body[data-bs-theme="dark"] {
-    --tertiary-hover-bg: #6b6e72;
+    --tertiary-hover-bg: #54575c;
+    --tertiary-hover-subtle-bg: #3b3e42;
 }

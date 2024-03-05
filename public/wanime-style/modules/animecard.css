@@ -8,6 +8,13 @@
     position: relative;
 }
 
+.animecard h5 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 /*  d-flex justify-content-center gap-1 mt-1 me-1 mb-0 position-absolute top-0 start-50 translate-middle-x */
 
 .animecard .episodes {
