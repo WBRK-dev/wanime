@@ -203,7 +203,7 @@
 
             let response;
             try {
-                response = await (await fetch("{{config("app.api_url")}}/anime/servers?episodeId="+id)).json();
+                response = await (await fetch("{{config("app.exp_api_url")}}/anime/servers?episodeId="+id)).json();
             } catch (error) {
                 $("#video #loadercircle").addClass("d-none");
                 $("#video #errorcircle").removeClass("d-none");
@@ -238,8 +238,8 @@
 
             let response;
             try {
-                // response = await (await fetch(`{{config("app.api_url")}}/anime/episode-srcs?id=${episodeId}&server=${server}&category=${category}`)).json();
-                response = await (await fetch(`{{config("app.api_url")}}/anime/episode-srcs?id=${episodeId}&category=${category}`)).json();
+                // response = await (await fetch(`{{config("app.exp_api_url")}}/anime/episode-srcs?id=${episodeId}&server=${server}&category=${category}`)).json();
+                response = await (await fetch(`{{config("app.exp_api_url")}}/anime/episode-srcs?id=${episodeId}&category=${category}`)).json();
                 malID = response.malID;
             } catch (error) {
                 $("#video #loadercircle").addClass("d-none");
@@ -305,7 +305,7 @@
         async function loadVideo(url) {
             if (Hls.isSupported()) {
                 hlsStream = new Hls();
-                hlsStream.on(Hls.Events.ERROR, function (event, data) {
+                hlsStream.on(Hls.Events.NETWORK_ERROR, function (event, data) {
                     console.log("Video error", event, data);
                     $("#video #loadercircle").addClass("d-none");
                     $("#video #errorcircle").removeClass("d-none");

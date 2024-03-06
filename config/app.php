@@ -60,6 +60,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'api_url' => env('API_URL', 'http://localhost'),
+    'exp_api_url' => env('EXPOSED_API_URL', 'http://localhost'),
     'gogo_api_url' => env('GOGO_API_URL', 'http://localhost'),
     'cors_url' => env('CORS_URL', 'http://localhost'),
 
