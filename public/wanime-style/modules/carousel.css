@@ -96,11 +96,14 @@
     border-radius: 50px;
 
     background-color: var(--bs-primary);
+    transition: background-color 250ms;
 }
+.w-carousel .items .item .details a.watch-button:hover {background-color: var(--primary-hover-subtle-bg);}
 
 .w-carousel .items .item .details a.watch-button i {display: grid; margin-bottom: 1px;}
 
 .w-carousel .items .item .details a.details-button {background-color: var(--bs-secondary);}
+.w-carousel .items .item .details a.details-button:hover {background-color: var(--secondary-hover-subtle-bg);}
 
 
 .w-carousel .control {
