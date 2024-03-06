@@ -1,13 +1,13 @@
-<div id="episodes" class="bg-body-secondary p-2 rounded overflow-auto {{ $episodes["totalEpisodes"] <= 12 ? "d-grid gap-2" : "d-grid gap-2" }}" style="max-height: 450px; {{ $episodes["totalEpisodes"] > 12 ? "grid-template-columns: repeat(auto-fill, minmax(40px, 1fr))" : "grid-template-columns: repeat(auto-fill, minmax(40px, 1fr))" }}">
-    {{-- @if ($episodes["totalEpisodes"] <= 12)
+<div id="episodes" class="watch-episodes {{ $episodes["totalEpisodes"] <= 12 ? "list" : "grid" }}" style="max-height: 450px; {{ $episodes["totalEpisodes"] > 12 ? "grid-template-columns: repeat(auto-fill, minmax(40px, 1fr))" : "grid-template-columns: repeat(auto-fill, minmax(40px, 1fr))" }}">
+    @if ($episodes["totalEpisodes"] <= 12)
         @foreach ($episodes["episodes"] as $episode)
             <button class="btn btn-secondary">{{ $episode["number"] }}</button>
         @endforeach
-    @else --}}
+    @else
         @for ($i = 0; $i < count($episodes["episodes"]); $i++)
             <button class="btn {{ $i === $history ? "btn-success" : "btn-secondary" }} px-0" onclick="epClick({{ $i }}, '{{ $episodes['episodes'][$i]['episodeId'] }}')">{{ $episodes["episodes"][$i]["number"] }}</button>
         @endfor
-    {{-- @endif --}}
+    @endif
 </div>
 
 @section("head.episodes")

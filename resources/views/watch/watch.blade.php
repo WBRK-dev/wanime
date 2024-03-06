@@ -35,7 +35,7 @@
                     <p class="d-flex align-items-center gap-2 m-0 px-2 py-1 bg-body-secondary rounded-start"><i class="fi fi-sr-subtitles"></i> {{ $anime["anime"]["info"]["stats"]["episodes"]["sub"] ?? 0 }}</p>
                     <p class="d-flex align-items-center gap-2 m-0 px-2 py-1 bg-body-tertiary rounded-end"><i class="fi fi-sr-microphone"></i> {{ $anime["anime"]["info"]["stats"]["episodes"]["dub"] ?? 0 }}</p>
                 </div>
-                <h4>{{ $anime["anime"]["info"]["name"] }}</h4>
+                <h4 class="fs-5 mb-4 selectable">{{ $anime["anime"]["info"]["name"] }}</h4>
                 <div class="w-100 overflow-auto mb-4" style="height: 100px;">{{ $anime["anime"]["info"]["description"] }}</div>
 
                 @if (count($anime["seasons"]))
