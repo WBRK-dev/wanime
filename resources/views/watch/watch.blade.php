@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <h4 class="mt-4">Recommended</h4>
+        <h4 class="fs-5 mt-4">Recommended</h4>
         <div class="d-grid column-gap-2 mb-4 overflow-hidden" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); grid-auto-rows: 0; grid-template-rows: 1fr;">
             @foreach ($anime["recommendedAnimes"] as $animeR)
                 @include("modules.animecard", [
@@ -228,7 +228,7 @@
             renderServers(response);
         }
 
-        loadEpId({{ $history }}, "{{ $episodes["episodes"][$history]["episodeId"] }}");
+        // loadEpId({{ $history }}, "{{ $episodes["episodes"][$history]["episodeId"] }}");
 
         async function loadServer(server, category="sub") {
 

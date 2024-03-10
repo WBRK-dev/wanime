@@ -1,4 +1,3 @@
-
 <div>
 
     <div id="video" class="position-relative rounded overflow-hidden" style="isolation: isolate;">
@@ -7,9 +6,13 @@
 
             
         </video>
+
+        <div class="position-absolute top-0 start-0 w-100">
+            <p class="m-2 fs-5 fw-bold" id="episodetitle"></p>
+        </div>
     
-        <div class="position-absolute top-0 left-0 w-100 h-100">
-            <div id="backcontrols" class="position-absolute bottom-0 left-0 w-100" style="height: 200px;"></div>
+        <div class="position-absolute top-0 start-0 w-100 h-100">
+            <div id="backcontrols" class="position-absolute bottom-0 start-0 w-100" style="height: 200px;"></div>
         </div>
 
         <div id="videosubtitles" class="d-flex flex-column align-items-center position-absolute start-50 translate-middle-x" style="max-width: 100%; bottom: calc(52px + .5rem);">
@@ -40,7 +43,7 @@
     
             <div id="track" class="position-absolute" data-cancel-search></div>
     
-            <div id="buttons" class="position-absolute bottom-0 start-0 d-flex flex-wrap p-2 w-100">
+            <div id="buttons" class="position-absolute bottom-0 start-0 d-flex flex-wrap p-2 w-100" style="box-sizing: border-box;">
                 <div id="play" class="p-2 fi-switch" onclick="togglePlay()" data-cancel-search><i class="fi fi-16 fi-sr-play" id="disabled"></i><i class="fi fi-16 fi-sr-pause" id="enabled"></i></div>
                 <div id="mute" class="p-2 fi-switch active" onclick="toggleMute()" data-cancel-search><i class="fi fi-16 fi-sr-volume" id="disabled"></i><i class="fi fi-16 fi-sr-volume-mute" id="enabled"></i></div>
     
@@ -64,21 +67,17 @@
         <button class="btn" onclick="tryNextEp()">Next</button>
         <button class="btn ms-auto" id="autoskip">Skip OP&ED <span class="text-success">On</span></button>
         @auth
-            <div class="btn-group dropdown-left">
-                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ $watchlist["label"] }}
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><button onclick="dropdownHandler(this, 'watching')" class="dropdown-item {{ ($watchlist["value"] === "watching") ? "active" : "" }}" href="#">Watching</button></li>
-                    <li><button onclick="dropdownHandler(this, 'planning')" class="dropdown-item {{ ($watchlist["value"] === "planning") ? "active" : "" }}" href="#">Planning</button></li>
-                    <li><button onclick="dropdownHandler(this, 'completed')" class="dropdown-item {{ ($watchlist["value"] === "completed") ? "active" : "" }}" href="#">Completed</button></li>
-                    <li><button onclick="dropdownHandler(this, 'paused')" class="dropdown-item {{ ($watchlist["value"] === "paused") ? "active" : "" }}" href="#">Paused</button></li>
-                    <li><button onclick="dropdownHandler(this, 'dropped')" class="dropdown-item {{ ($watchlist["value"] === "dropped") ? "active" : "" }}" href="#">Dropped</button></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><button onclick="removeButton(this)" class="dropdown-item {{ ($watchlist["value"] === "") ? "disabled" : "" }}" href="#">Remove</button></li>
-                </ul>
+            <div class="watchlist-dropdown">
+                <button class="btn"><span>{{ $watchlist["label"] }}</span><i class="fi fi-sr-caret-down"></i></button>
+                <div class="dropdown">
+                    <button class="dropdown-item {{ ($watchlist["value"] === "watching") ? "active" : "" }}" data-dropdown-type="watching">Watching</button>
+                    <button class="dropdown-item {{ ($watchlist["value"] === "planning") ? "active" : "" }}" data-dropdown-type="planning">Planning</button>
+                    <button class="dropdown-item {{ ($watchlist["value"] === "completed") ? "active" : "" }}" data-dropdown-type="completed">Completed</button>
+                    <button class="dropdown-item {{ ($watchlist["value"] === "paused") ? "active" : "" }}" data-dropdown-type="paused">Paused</button>
+                    <button class="dropdown-item {{ ($watchlist["value"] === "dropped") ? "active" : "" }}" data-dropdown-type="dropped">Dropped</button>
+                    <div class="dropdown-item separator"></div>
+                    <button class="dropdown-item" data-dropdown-type="remove">Remove</button>
+                </div>
             </div>
         @endauth
     </div>
@@ -88,6 +87,27 @@
 
 @section("head.video")
     
+<script src="{{config("app.url")}}/wanime-style/modules-js/watchlist-dropdown.js"></script>
+<script>
+
+    function watchlistStatusUpdate(state) {
+        fetch(`{{ config("app.url") }}/api/watchlist/{{ $anime["anime"]["info"]["id"] }}`, {
+            method: "PUT",
+            body: JSON.stringify({
+                "_token": "{{ csrf_token() }}",
+                "status": state,
+                "anime": {
+                    "title": "{{ $anime["anime"]["info"]["name"] }}",
+                    "image": "{{ $anime["anime"]["info"]["poster"] }}"
+                }
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+    }
+
+</script>
 <script>
 
     let trackUpdateInterval;

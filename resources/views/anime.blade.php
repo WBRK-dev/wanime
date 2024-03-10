@@ -26,36 +26,20 @@
 
             <div class="d-flex gap-2 mb-4">
                 <a href="{{ $_ENV["APP_URL"] }}/watch?id={{ $results["anime"]["info"]["id"] }}" class="bigbutton btn-primary"><i class="fi fi-sr-play-circle"></i> Watch</a>
-                {{-- @auth
-                    <div class="btn-group dropdown-left">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ $watchlist["label"] }}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><button onclick="dropdownHandler(this, 'watching')" class="dropdown-item {{ ($watchlist["value"] === "watching") ? "active" : "" }}" href="#">Watching</button></li>
-                            <li><button onclick="dropdownHandler(this, 'planning')" class="dropdown-item {{ ($watchlist["value"] === "planning") ? "active" : "" }}" href="#">Planning</button></li>
-                            <li><button onclick="dropdownHandler(this, 'completed')" class="dropdown-item {{ ($watchlist["value"] === "completed") ? "active" : "" }}" href="#">Completed</button></li>
-                            <li><button onclick="dropdownHandler(this, 'paused')" class="dropdown-item {{ ($watchlist["value"] === "paused") ? "active" : "" }}" href="#">Paused</button></li>
-                            <li><button onclick="dropdownHandler(this, 'dropped')" class="dropdown-item {{ ($watchlist["value"] === "dropped") ? "active" : "" }}" href="#">Dropped</button></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><button onclick="removeButton(this)" class="dropdown-item {{ ($watchlist["value"] === "") ? "disabled" : "" }}" href="#">Remove</button></li>
-                        </ul>
+                @auth
+                    <div class="watchlist-dropdown">
+                        <button class="bigbutton btn-secondary"><span>{{ $watchlist["label"] }}</span><i class="fi fi-sr-caret-down"></i></button>
+                        <div class="dropdown">
+                            <button class="dropdown-item {{ ($watchlist["value"] === "watching") ? "active" : "" }}" data-dropdown-type="watching">Watching</button>
+                            <button class="dropdown-item {{ ($watchlist["value"] === "planning") ? "active" : "" }}" data-dropdown-type="planning">Planning</button>
+                            <button class="dropdown-item {{ ($watchlist["value"] === "completed") ? "active" : "" }}" data-dropdown-type="completed">Completed</button>
+                            <button class="dropdown-item {{ ($watchlist["value"] === "paused") ? "active" : "" }}" data-dropdown-type="paused">Paused</button>
+                            <button class="dropdown-item {{ ($watchlist["value"] === "dropped") ? "active" : "" }}" data-dropdown-type="dropped">Dropped</button>
+                            <div class="dropdown-item separator"></div>
+                            <button class="dropdown-item" data-dropdown-type="remove">Remove</button>
+                        </div>
                     </div>
-                @endauth --}}
-                <div class="watchlist-dropdown">
-                    <button class="bigbutton btn-secondary"><span>{{ $watchlist["label"] }}</span><i class="fi fi-sr-caret-down"></i></button>
-                    <div class="dropdown">
-                        <button class="dropdown-item {{ ($watchlist["value"] === "watching") ? "active" : "" }}" data-dropdown-type="watching">Watching</button>
-                        <button class="dropdown-item {{ ($watchlist["value"] === "planning") ? "active" : "" }}" data-dropdown-type="planning">Planning</button>
-                        <button class="dropdown-item {{ ($watchlist["value"] === "completed") ? "active" : "" }}" data-dropdown-type="completed">Completed</button>
-                        <button class="dropdown-item {{ ($watchlist["value"] === "paused") ? "active" : "" }}" data-dropdown-type="paused">Paused</button>
-                        <button class="dropdown-item {{ ($watchlist["value"] === "dropped") ? "active" : "" }}" data-dropdown-type="dropped">Dropped</button>
-                        <div class="dropdown-item separator"></div>
-                        <button class="dropdown-item" data-dropdown-type="remove">Remove</button>
-                    </div>
-                </div>
+                @endauth
             </div>
 
             <div class="d-flex flex-wrap justify-content-center gap-2 px-2" style="width: min(1000px, 100%);">

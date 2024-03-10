@@ -1,4 +1,4 @@
-<div class="modal fade" id="gogoanimeselector" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="gogoanimeselector" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 @section("head.gogoanime")
     <script data-label="Script required for loading the alternative anime from the provider gogoanime.">
