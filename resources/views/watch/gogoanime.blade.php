@@ -32,6 +32,10 @@
             $("#gogoanimeselectbutton").removeClass("d-none");
             $("#servers").addClass("d-none");
             $("#video #wanimelogo #backup").removeClass("d-none");
+
+            // Disable cors because gogo does not use cors.
+            cors = false;
+
             if (aniwatchToGogoIds["{{$anime["anime"]["info"]["id"]}}"]) {
                 gogoProvider = true;
                 $("#gogoanimeselectbutton").text("Loading anime");
