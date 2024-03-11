@@ -39,7 +39,7 @@
 
             @foreach ($spotlight as $anime)
                 <div class="item {{ (((int) $anime["rank"]) === 1) ? "slide-active" : ((((int) $anime["rank"]) === 2) ? "slide-next" : "") }}" data-slide-index="{{ ((int) $anime["rank"]) - 1 }}">
-                    <img src="{{ $anime["poster"] }}" alt="Spotlight Image for {{ $anime["name"] }}">
+                    <img src="{{ $anime["poster"] }}" alt="Spotlight Image for {{ $anime["name"] }}" class="bg-body">
                     <div class="details">
                         <p class="text-body-secondary">#{{ $anime["rank"] }} Spotlight</p>
                         <p class="title mb-2 selectable">{{ $anime["name"] }}</p>
