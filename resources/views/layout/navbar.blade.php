@@ -11,10 +11,9 @@
         
         @else
         
-            <button class="account" onclick="toggleAccountDropdown()">
-                <p class="name">{{ Auth::user()->name }}</p>
-                <i class="fi fi-sr-caret-down"></i>
-            </button>
+            <a class="account no-a" href="{{config("app.url")}}/login">
+                <p class="name">Login</p>
+            </a>
 
         @endif
     </div>
@@ -40,7 +39,10 @@
 
         </div>
 
-        <a href="#" class="logout"><p>Logout</p><i class="fi fi-sr-arrow-right"></i></a>
+        <form action="{{ $_ENV["APP_URL"] }}/logout" method="post">
+            @csrf
+            <button class="logout"><p>Logout</p><i class="fi fi-sr-arrow-right"></i></button>
+        </form>
 
     </div>
 @else
