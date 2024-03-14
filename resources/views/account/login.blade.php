@@ -6,13 +6,13 @@
 
         <form class="px-2 py-4" style="width: min(400px, 100%)" method="post" action="{{ $_ENV["APP_URL"] }}/login">
             @csrf
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+            <div class="d-flex flex-column mb-3">
+                <label for="email" class="mb-1">Email</label>
+                <input type="email" id="email" name="email" required>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+            <div class="d-flex flex-column mb-3">
+                <label for="password" class="mb-1">Password</label>
+                <input type="password" id="password" name="password" required>
                 @if ($errors->has('password'))
                     @foreach ($errors->get('password') as $err)
                         <p class="text-danger m-0">{{ $err }}</p>
@@ -25,8 +25,8 @@
                   Stay logged in
                 </label>
             </div>              
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-            <p class="text-body-secondary">Don't have an account? <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ $_ENV["APP_URL"] }}/account/register">Request account</a></p>
+            <button type="submit" class="btn btn-primary w-100 d-flex justify-content-center">Login</button>
+            <p class="text-body-secondary mt-1">Don't have an account? <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ $_ENV["APP_URL"] }}/account/register">Request account</a></p>
         </form>        
 
     </div>

@@ -1,4 +1,4 @@
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="email"] {
 
     border: 1px solid var(--bs-border-color);
     background-color: var(--bs-secondary-bg);
@@ -9,5 +9,6 @@ input[type="text"], input[type="password"] {
 
     font-size: 16px;
 
+    transition: outline 250ms;
 }
-input[type="text"]:focus, input[type="password"]:focus {outline: 4px solid #00000071;}
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {outline: 4px solid #00000071;}

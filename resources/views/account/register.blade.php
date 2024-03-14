@@ -11,36 +11,36 @@
             </div> --}}
 
             @csrf
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="name" required>
+            <div class="d-flex flex-column mb-3">
+                <label for="username" class="mb-1">Username</label>
+                <input type="text" id="username" name="name" required>
                 @if ($errors->has('name'))
                     @foreach ($errors->get('name') as $err)
                         <p class="text-danger m-0">{{ $err }}</p>
                     @endforeach
                 @endif
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+            <div class="d-flex flex-column mb-3">
+                <label for="email" class="mb-1">Email</label>
+                <input type="email" id="email" name="email" required>
                 @if ($errors->has('email'))
                     @foreach ($errors->get('email') as $err)
                         <p class="text-danger m-0">{{ $err }}</p>
                     @endforeach
                 @endif
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+            <div class="d-flex flex-column mb-3">
+                <label for="password" class="mb-1">Password</label>
+                <input type="password" id="password" name="password" required>
                 @if ($errors->has('password'))
                     @foreach ($errors->get('password') as $err)
                         <p class="text-danger m-0">{{ $err }}</p>
                     @endforeach
                 @endif
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password Again</label>
-                <input type="password" class="form-control" id="password" name="passwordagain" required>
+            <div class="d-flex flex-column mb-3">
+                <label for="password" class="mb-1">Password Again</label>
+                <input type="password" id="password" name="passwordagain" required>
                 @if ($errors->has('passwordagain'))
                     @foreach ($errors->get('passwordagain') as $err)
                         <p class="text-danger m-0">{{ $err }}</p>
