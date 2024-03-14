@@ -25,6 +25,10 @@
     height: 60px;
     padding: 0 1rem;
 
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+
     position: relative;
 
     cursor: pointer;

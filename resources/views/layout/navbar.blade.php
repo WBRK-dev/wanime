@@ -51,29 +51,36 @@
 <nav class="w-header">
     <a href="{{config("app.url")}}/" class="logo">WAnime</a>
 
-    @auth
-        <div class="right">
+    <div class="right">
+        @if (Auth::check())
 
-            <div class="account" onclick="toggleAccountDropdown()">
+            <button class="account" onclick="toggleAccountDropdown()">
                 <p class="name">{{ Auth::user()->name }}</p>
                 <i class="fi fi-sr-caret-down"></i>
-            </div>
+            </button>
         
-        </div>
-    @endauth
+        @else
+        
+            <button class="account" onclick="toggleAccountDropdown()">
+                <p class="name">{{ Auth::user()->name }}</p>
+                <i class="fi fi-sr-caret-down"></i>
+            </button>
+
+        @endif
+    </div>
 
 </nav>
 
-@auth
+@if (Auth::check())
     <div class="account-dropdown">
                     
-        <p class="fw-bold">{{ Auth::user()->name }}</p>
-        <p>{{ Auth::user()->email }}</p>
+        <p class="fs-5 fw-bold text-center">{{ Auth::user()->name }}</p>
+        <p class="text-center">{{ Auth::user()->email }}</p>
 
         <div class="account-dropdown-item-list">
 
             <a class="account-dropdown-item" href="{{ config("app.url") }}/account"><i class="fi fi-sr-user"></i><p>Account</p></a>
-            <a class="account-dropdown-item" href="{{ config("app.url") }}/watchlist"><i class="fi fi-sr-list"></i><p>Watchlist</p></a>
+            <a class="account-dropdown-item" href="{{ config("app.url") }}/watchlist"><i class="fi fi-sr-rectangle-list"></i><p>Watchlist</p></a>
             <a class="account-dropdown-item" href="{{ config("app.url") }}/account/settings"><i class="fi fi-sr-settings"></i><p>Settings</p></a>
 
             @admin
@@ -86,4 +93,6 @@
         <a href="#" class="logout"><p>Logout</p><i class="fi fi-sr-arrow-right"></i></a>
 
     </div>
-@endauth
+@else
+
+@endif
