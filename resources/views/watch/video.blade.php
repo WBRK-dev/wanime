@@ -20,7 +20,7 @@
         </div>
 
         <div id="loadercircle"></div>
-        <div id="errorcircle" class="d-none"><i class="fi fi-sr-cross"></i></div>
+        <div id="errorcircle" class="d-none z-1" onclick="this.classList.add('d-none')"><i class="fi fi-sr-cross"></i></div>
         <div class="d-none" id="wanimelogo">
             <div id="text">
                 <p>WAnime</p>
@@ -326,10 +326,8 @@
     function checkFullscreen() {
         if (document.fullscreenElement || document.webkitFullscreenElement ||
         document.mozFullScreenElement) {
-            console.log('fullscreen');
             return true;
         } else {
-            console.log('not fullscreen');
             return false;
         }
     }

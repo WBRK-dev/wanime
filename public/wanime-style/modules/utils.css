@@ -2,3 +2,5 @@ a.no-a {
     text-decoration: none;
     color: var(--bs-body-color);
 }
+
+.cu-pointer {cursor: pointer;}

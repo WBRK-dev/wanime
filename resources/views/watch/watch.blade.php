@@ -47,7 +47,6 @@
                     </div>
                 @endif
 
-
                 @auth
                     <div class="bg-body-secondary rounded p-2" style="width: min(300px, 100%);" id="voting">
                         <div class="d-flex align-items-center">
@@ -55,11 +54,11 @@
                             <p class="m-0 ms-auto text-body-secondary d-flex align-items-center gap-2"><span data-anime-vote-stars>{{ floatval($stars["avg"]) }}</span><i class="fi fi-sr-star"></i></p>
                         </div>
                         <div class="d-flex align-items-center justify-content-evenly pt-1">
-                            <button class="bg-transparent border-0 m-0 py-1 flex-grow-1 d-grid" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 1)" onmouseout="updateStarCss(this, false, 1)" onclick="voteStarClick(1)"><i class="fi fi-{{ $stars["selected"] > 0 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
-                            <button class="bg-transparent border-0 m-0 py-1 flex-grow-1 d-grid" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 2)" onmouseout="updateStarCss(this, false, 2)" onclick="voteStarClick(2)"><i class="fi fi-{{ $stars["selected"] > 1 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
-                            <button class="bg-transparent border-0 m-0 py-1 flex-grow-1 d-grid" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 3)" onmouseout="updateStarCss(this, false, 3)" onclick="voteStarClick(3)"><i class="fi fi-{{ $stars["selected"] > 2 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
-                            <button class="bg-transparent border-0 m-0 py-1 flex-grow-1 d-grid" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 4)" onmouseout="updateStarCss(this, false, 4)" onclick="voteStarClick(4)"><i class="fi fi-{{ $stars["selected"] > 3 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
-                            <button class="bg-transparent border-0 m-0 py-1 flex-grow-1 d-grid" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 5)" onmouseout="updateStarCss(this, false, 5)" onclick="voteStarClick(5)"><i class="fi fi-{{ $stars["selected"] > 4 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
+                            <button class="bg-transparent border-0 m-0 py-2 flex-grow-1 d-grid cu-pointer" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 1)" onmouseout="updateStarCss(this, false, 1)" onclick="voteStarClick(1)"><i class="fi fi-{{ $stars["selected"] > 0 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
+                            <button class="bg-transparent border-0 m-0 py-2 flex-grow-1 d-grid cu-pointer" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 2)" onmouseout="updateStarCss(this, false, 2)" onclick="voteStarClick(2)"><i class="fi fi-{{ $stars["selected"] > 1 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
+                            <button class="bg-transparent border-0 m-0 py-2 flex-grow-1 d-grid cu-pointer" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 3)" onmouseout="updateStarCss(this, false, 3)" onclick="voteStarClick(3)"><i class="fi fi-{{ $stars["selected"] > 2 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
+                            <button class="bg-transparent border-0 m-0 py-2 flex-grow-1 d-grid cu-pointer" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 4)" onmouseout="updateStarCss(this, false, 4)" onclick="voteStarClick(4)"><i class="fi fi-{{ $stars["selected"] > 3 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
+                            <button class="bg-transparent border-0 m-0 py-2 flex-grow-1 d-grid cu-pointer" style="place-items: center;" id="votestar" onmouseover="updateStarCss(this, true, 5)" onmouseout="updateStarCss(this, false, 5)" onclick="voteStarClick(5)"><i class="fi fi-{{ $stars["selected"] > 4 ? "s" : "r" }}r-star fi-24 text-body-secondary pe-none"></i></button>
                         </div>
                     </div>
                 @endauth
@@ -92,6 +91,7 @@
 @section("head")
 
     <script src="{{config("app.url")}}/vtt.min.js"></script>
+    <script src="{{config("app.url")}}/wanime-style/modules-js/popups.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.14/dist/hls.min.js"></script>
     <style>
 
@@ -207,8 +207,7 @@
             } catch (error) {
                 $("#video #loadercircle").addClass("d-none");
                 $("#video #errorcircle").removeClass("d-none");
-                $("#errormodal .modal-footer #errorcode").html(`watch.001`);
-                (new bootstrap.Modal('#errormodal')).show();
+                wpopups.show("error");
                 return;
             }
 
@@ -217,8 +216,7 @@
             if (response["sub"].length === 0 && response["dub"].length === 0) {
                 $("#video #loadercircle").addClass("d-none");
                 $("#video #errorcircle").removeClass("d-none");
-                $("#errormodal .modal-footer #errorcode").html(`watch.002`);
-                (new bootstrap.Modal('#errormodal')).show();
+                wpopups.show("error");
                 return;
             }
             let exist = response[dub ? "dub": "sub"].some(obj => obj.serverName === videoserver);
@@ -228,7 +226,7 @@
             renderServers(response);
         }
 
-        // loadEpId({{ $history }}, "{{ $episodes["episodes"][$history]["episodeId"] }}");
+        loadEpId({{ $history }}, "{{ $episodes["episodes"][$history]["episodeId"] }}");
 
         async function loadServer(server, category="sub") {
 
@@ -244,17 +242,14 @@
             } catch (error) {
                 $("#video #loadercircle").addClass("d-none");
                 $("#video #errorcircle").removeClass("d-none");
-                $("#errormodal .modal-footer #errorcode").html(`watch.003`);
-                (new bootstrap.Modal('#errormodal')).show();
+                wpopups.show("error");
                 return;
             }
 
             if (response.status === 500) {
                 $("#video #loadercircle").addClass("d-none");
                 $("#video #errorcircle").removeClass("d-none");
-                // $("#servererrormodal .modal-footer #errorcode").html(`watch.004`);
-                // $("#servererrormodal .modal-body #errorpastecode").html(response.message);
-                // (new bootstrap.Modal('#servererrormodal')).show();
+                // wpopups.show("error");
                 initGogo();
                 return;
             }
@@ -266,8 +261,7 @@
             } catch (error) {
                 $("#video #loadercircle").addClass("d-none");
                 $("#video #errorcircle").removeClass("d-none");
-                $("#errormodal .modal-footer #errorcode").html(`watch.004`);
-                (new bootstrap.Modal('#errormodal')).show();
+                wpopups.show("error");
                 return;
             }
 
@@ -305,12 +299,17 @@
         async function loadVideo(url) {
             if (Hls.isSupported()) {
                 hlsStream = new Hls();
-                hlsStream.on(Hls.Events.NETWORK_ERROR, function (event, data) {
-                    console.log("Video error", event, data);
-                    $("#video #loadercircle").addClass("d-none");
-                    $("#video #errorcircle").removeClass("d-none");
-                    $("#errormodal .modal-footer #errorcode").html(`watch.006`);
-                    (new bootstrap.Modal('#errormodal')).show();
+                hlsStream.on(Hls.Events.ERROR, function (event, data) {
+                    switch (data.type) {
+                        case Hls.ErrorTypes.NETWORK_ERROR:
+                            $("#video #loadercircle").addClass("d-none");
+                            $("#video #errorcircle").removeClass("d-none");
+                            if (gogoProvider) wpopups.show("error");
+                            else {initGogo(); hlsStream.detachMedia();}
+                            return;
+                        default:
+                            break;
+                    }
                     return;
                 });
                 hlsStream.loadSource(cors ? `{{config("app.cors_url")}}${url}` : url);
@@ -337,9 +336,9 @@
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
             }
-            setTimeout(() => {
-                loadSkipTimes();
-            }, 1000);
+            // setTimeout(() => {
+            //     loadSkipTimes();
+            // }, 1000);
         }
 
         async function loadSkipTimes() {

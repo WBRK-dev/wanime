@@ -1,4 +1,7 @@
 .animecard {
+    background-color: transparent;
+    border: none;
+
     color: var(--bs-body-color);
     text-decoration: none;
 
@@ -6,6 +9,7 @@
     margin-top: .5rem;
 
     position: relative;
+    cursor: pointer;
 }
 
 .animecard h5 {
@@ -13,6 +17,7 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-align: start;
 }
 
 /*  d-flex justify-content-center gap-1 mt-1 me-1 mb-0 position-absolute top-0 start-50 translate-middle-x */

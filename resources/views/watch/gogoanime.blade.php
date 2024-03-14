@@ -29,6 +29,11 @@
         let gogoAnime = {};
 
         async function initGogo() {
+
+            if (gogoProvider) return;
+
+            if (!gogoModal) gogoModal = wpopups.get("gogoanimeselector");
+
             $("#gogoanimeselectbutton").removeClass("d-none");
             $("#servers").addClass("d-none");
             $("#video #wanimelogo #backup").removeClass("d-none");
@@ -41,33 +46,47 @@
         }
 
         function showGogoDialog() {
-            $("#gogoanimeselector input").val("{{$anime["anime"]["info"]["name"]}}");
+            $(`.w-popup[popup-id="gogoanimeselector"] input`).val("{{$anime["anime"]["info"]["name"]}}");
             gogoSearch();
-            if (!gogoModal) gogoModal = new bootstrap.Modal('#gogoanimeselector');
-            gogoModal.show();
+            wpopups.show("gogoanimeselector");
         }
 
         async function gogoSearch() {
-            $("#gogoanimeselector #gogoanimegrid").addClass("d-none");
-            $("#gogoanimeselector #gogoanimegrid").html("");
-            $("#gogoanimeselector #loader").removeClass("d-none");
+            $(gogoModal).find("#grid").addClass("d-none");
+            $(gogoModal).find("#grid").html("");
+            $(gogoModal).find("#spinner").removeClass("d-none");
 
-            let search = $("#gogoanimeselector input").val();
-            let response = await (await fetch(`{{config("app.gogo_api_url")}}/gogo/search?q=${search}`)).json();
-            if (response.error) return;
+            let search = $(gogoModal).find("input").val();
 
-            for (let i = 0; i < response.results.length; i++) {
-                $("#gogoanimeselector #gogoanimegrid").append(`<button class="card text-decoration-none w-100 mt-2 p-0" onclick="chooseGogoAnime('${response.results[i].id}')"><img src="${response.results[i].image}" class="card-img-top w-100" alt="Image" style="aspect-ratio: 1/1.36; object-fit: cover;"><div class="card-body p-2"><h5 class="card-title fs-6 mb-0 text-start">${response.results[i].title}</h5></div></button>`);
+            let response;
+            try {
+                response = await (await fetch(`{{config("app.gogo_api_url")}}/gogo/search?q=${search}`)).json();
+            } catch (error) {
+                $("#video #loadercircle").addClass("d-none");
+                $("#video #errorcircle").removeClass("d-none");
+                wpopups.show("error");
+                throw error;
             }
 
-            $("#gogoanimeselector #loader").addClass("d-none");
-            $("#gogoanimeselector #gogoanimegrid").removeClass("d-none");
+            if (response.error) {
+                $("#video #loadercircle").addClass("d-none");
+                $("#video #errorcircle").removeClass("d-none");
+                wpopups.show("error"); 
+                throw "Error while getting gogoanime search results.";
+            };
+
+            for (let i = 0; i < response.results.length; i++) {
+                $(gogoModal).find("#grid").append(`<button onclick="chooseGogoAnime('${response.results[i].id}')" class="animecard"><img src="${response.results[i].image}" class="w-100 rounded" alt="Image" style="aspect-ratio: 1/1.36; object-fit: cover;"><div class="py-2"><h5 class="fs-6">${response.results[i].title}</h5></div></button>`);
+            }
+
+            $(gogoModal).find("#spinner").addClass("d-none");
+            $(gogoModal).find("#grid").removeClass("d-none");
         }
 
         function gogoSearchEvent() {
-            $("#gogoanimeselector #gogoanimegrid").addClass("d-none");
-            $("#gogoanimeselector #gogoanimegrid").html("");
-            $("#gogoanimeselector #loader").removeClass("d-none");
+            $(gogoModal).find("#grid").addClass("d-none");
+            $(gogoModal).find("#grid").html("");
+            $(gogoModal).find("#spinner").removeClass("d-none");
 
             clearTimeout(gogoSearchTimeout);
             gogoSearchTimeout = setTimeout(gogoSearch, 3000);
@@ -78,7 +97,7 @@
             localStorage.setItem("aniwatchtogogo", JSON.stringify(aniwatchToGogoIds));
 
             gogoProvider = true;
-            gogoModal.hide();
+            wpopups.hide();
 
             await fetchGogoAnime(id);
             loadGogoEp(episodeIndex);
@@ -89,8 +108,21 @@
             $("#video #errorcircle").addClass("d-none");
             $("#video #wanimelogo").addClass("d-none");
 
-            let response = await (await fetch(`{{config("app.gogo_api_url")}}/gogo/info?id=${id}`)).json();
-            if (response.error) return;
+            let response;
+            try {
+                response = await (await fetch(`{{config("app.gogo_api_url")}}/gogo/info?id=${id}`)).json();
+            } catch (error) {
+                $("#video #loadercircle").addClass("d-none");
+                $("#video #errorcircle").removeClass("d-none");
+                wpopups.show("error");
+                throw error;
+            }
+            if (response.error || response.episodes.length === 0) {
+                $("#video #loadercircle").addClass("d-none");
+                $("#video #errorcircle").removeClass("d-none");
+                wpopups.show("error");
+                throw "Error while getting gogoanime info.";
+            }
 
             $("#gogoanimeselectbutton").text(response.title);
 

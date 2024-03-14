@@ -1,0 +1,13 @@
+input[type="text"], input[type="password"] {
+
+    border: 1px solid var(--bs-border-color);
+    background-color: var(--bs-secondary-bg);
+    border-radius: .25rem;
+    outline: 0px solid #00000071;
+
+    padding: .25rem .5rem;
+
+    font-size: 16px;
+
+}
+input[type="text"]:focus, input[type="password"]:focus {outline: 4px solid #00000071;}

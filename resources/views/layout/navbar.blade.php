@@ -51,22 +51,39 @@
 <nav class="w-header">
     <a href="{{config("app.url")}}/" class="logo">WAnime</a>
 
-    <div class="right">
+    @auth
+        <div class="right">
 
-        <div class="account" onclick="toggleAccountDropdown()">
-            <p class="name">WBR_K</p>
-            <i class="fi fi-sr-caret-down"></i>
+            <div class="account" onclick="toggleAccountDropdown()">
+                <p class="name">{{ Auth::user()->name }}</p>
+                <i class="fi fi-sr-caret-down"></i>
+            </div>
+        
         </div>
-    
-    </div>
+    @endauth
+
 </nav>
 
-<div class="account-dropdown">
-                
-    <div class="dropdown-item">Watchlist</div>
-    <div class="dropdown-item disabled">My Requests</div>
-    <div class="dropdown-item separator"></div>
-    <div class="dropdown-item">Watchlist</div>
-    <div class="dropdown-item disabled">My Requests</div>
+@auth
+    <div class="account-dropdown">
+                    
+        <p class="fw-bold">{{ Auth::user()->name }}</p>
+        <p>{{ Auth::user()->email }}</p>
 
-</div>
+        <div class="account-dropdown-item-list">
+
+            <a class="account-dropdown-item" href="{{ config("app.url") }}/account"><i class="fi fi-sr-user"></i><p>Account</p></a>
+            <a class="account-dropdown-item" href="{{ config("app.url") }}/watchlist"><i class="fi fi-sr-list"></i><p>Watchlist</p></a>
+            <a class="account-dropdown-item" href="{{ config("app.url") }}/account/settings"><i class="fi fi-sr-settings"></i><p>Settings</p></a>
+
+            @admin
+                <a class="account-dropdown-item" href="{{ config("app.url") }}/admin"><i class="fi fi-sr-api"></i><p>Admin Panel</p></a>
+                <a class="account-dropdown-item" href="{{ config("app.url") }}/admin/registrations"><i class="fi fi-sr-api"></i><p>Registrations</p></a>
+            @endadmin
+
+        </div>
+
+        <a href="#" class="logout"><p>Logout</p><i class="fi fi-sr-arrow-right"></i></a>
+
+    </div>
+@endauth
