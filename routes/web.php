@@ -40,6 +40,8 @@ Route::view("/subscriptions/buy", "subscriptions.buy");
 
 Route::view("/resourcesused", "resourcesused");
 
+Route::view("/login", "account.login");
+
 // Admin ------
 
 Route::prefix("admin")->middleware("admin")->group(function() {
