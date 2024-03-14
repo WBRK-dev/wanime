@@ -299,19 +299,19 @@
         async function loadVideo(url) {
             if (Hls.isSupported()) {
                 hlsStream = new Hls();
-                hlsStream.on(Hls.Events.ERROR, function (event, data) {
-                    switch (data.type) {
-                        case Hls.ErrorTypes.NETWORK_ERROR:
-                            $("#video #loadercircle").addClass("d-none");
-                            $("#video #errorcircle").removeClass("d-none");
-                            if (gogoProvider) wpopups.show("error");
-                            else {initGogo(); hlsStream.detachMedia();}
-                            return;
-                        default:
-                            break;
-                    }
-                    return;
-                });
+                // hlsStream.on(Hls.Events.ERROR, function (event, data) {
+                //     switch (data.type) {
+                //         case Hls.ErrorTypes.NETWORK_ERROR:
+                //             $("#video #loadercircle").addClass("d-none");
+                //             $("#video #errorcircle").removeClass("d-none");
+                //             if (gogoProvider) wpopups.show("error");
+                //             else {initGogo(); hlsStream.detachMedia();}
+                //             return;
+                //         default:
+                //             break;
+                //     }
+                //     return;
+                // });
                 hlsStream.loadSource(cors ? `{{config("app.cors_url")}}${url}` : url);
                 hlsStream.attachMedia(video);
                 hlsStream.on(Hls.Events.MANIFEST_PARSED, function() {
