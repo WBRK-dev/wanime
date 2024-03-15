@@ -69,8 +69,8 @@
         </div>
 
         <div class="control">
-            <button class="control-button" onclick="wCarouselSlidePrev()"><i class="fi-sr-angle-small-left"></i></button>
             <button class="control-button" onclick="wCarouselSlideNext()"><i class="fi-sr-angle-small-right"></i></button>
+            <button class="control-button" onclick="wCarouselSlidePrev()"><i class="fi-sr-angle-small-left"></i></button>
         </div>
     </div>
     
