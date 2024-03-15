@@ -11,6 +11,7 @@
 
     {{-- Js modules --}}
     <script src="{{config("app.url")}}/wanime-style/modules-js/account-dropdown.js"></script>
+    <script src="{{config("app.url")}}/wanime-style/modules-js/search.js"></script>
 
     @include("layout.hit")
     @yield("head")

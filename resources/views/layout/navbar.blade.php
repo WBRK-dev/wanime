@@ -2,6 +2,20 @@
     <a href="{{config("app.url")}}/" class="logo">WAnime</a>
 
     <div class="right">
+
+
+        <div class="search">
+            <form action="search" method="get">
+                <input type="text" placeholder="Search..." name="search">
+            </form>
+            <i class="fi fi-sr-search"></i>
+        </div>
+
+        <div class="search-button">
+            <button onclick="search.toggle()"><i class="fi fi-sr-search"></i></button>
+        </div>
+
+
         @if (Auth::check())
 
             <button class="account" onclick="toggleAccountDropdown()">
@@ -45,6 +59,11 @@
         </form>
 
     </div>
-@else
-
 @endif
+
+<div class="search-dropdown">
+    <form action="search" method="get">
+        <input type="text" placeholder="Search..." name="search">
+    </form>
+    <i class="fi fi-sr-search"></i>
+</div>
