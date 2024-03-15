@@ -29,6 +29,8 @@
 .w-carousel .items .item.slide-active {left: 0%; z-index: 1;}
 .w-carousel .items .item.slide-prev {left: -100%; z-index: 1;}
 .w-carousel .items .item.slide-next {left: 100%; z-index: 0;}
+.w-carousel .items .item.slide-prev-2 {left: -100%; z-index: 0;}
+.w-carousel .items .item.slide-next-2 {left: 100%; z-index: 1;}
 
 .w-carousel .items .item img {
     position: absolute;
