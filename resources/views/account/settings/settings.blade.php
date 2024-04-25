@@ -1,24 +1,25 @@
 @extends("layout.root")
 
 @section("body")
-    
-    <div id="maingrid" class="d-grid gap-2 p-2 h-100" style="grid-template-columns: 300px 1fr;">
-        <div style="height: max-content;">
-            <div class="btn-group-vertical w-100" role="group" aria-label="Vertical radio toggle button group">
-                <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio1" autocomplete="off" checked>
-                <label class="btn btn-outline-secondary" for="vbtn-radio1" onclick="open_page('general')">General</label>
-                <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio2" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="vbtn-radio2" onclick="open_page('privacy')">Privacy</label>
-                <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio3" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="vbtn-radio3" onclick="open_page('account')">Account</label>
-                <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio4" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="vbtn-radio4" onclick="open_page('advanced')">Advanced</label>
-            </div>
+
+    <div class="d-grid h-100 p-2 gap-2" style="grid-template-columns: 300px 1fr; min-height: 400px;">
+
+        <div class="setting-list">
+
+            <button class="setting-item active" onclick="openPage('general', this)"><i class="fi fi-sr-settings"></i><p>General</p></button>
+            <button class="setting-item" onclick="openPage('privacy', this)"><i class="fi fi-sr-incognito"></i><p>Privacy</p></button>
+            <button class="setting-item" onclick="openPage('account', this)"><i class="fi fi-sr-user"></i><p>Account</p></button>
+            <button class="setting-item" onclick="openPage('advanced', this)"><i class="fi fi-sr-square-code"></i><p>Advanced</p></button>
+
         </div>
-        
-        <div id="settings" class="border rounded h-100 overflow-auto" style="min-height: 400px;">
-            @include("account.settings.settingpages")
+
+        <div class="setting-pages">
+
+            @include("account.settings.settingspages")
+
         </div>
+
+
     </div>
 
 @endsection
@@ -27,25 +28,43 @@
     
     <script>
 
-        function open_page(id) {
-            $("#settings > *").hide();
-            $(`#settings > #${id}`).show();
+        function openPage(id, btn) {
+            $(".setting-pages > div").addClass("d-none");
+            $(`.setting-pages > [setting-page-id="${id}"]`).removeClass("d-none");
+
+            if (btn) {
+                $(btn).parent().children().removeClass("active");
+                $(btn).addClass("active");
+            }
         }
 
     </script>
     <style>
 
-        @media only screen and (max-width: 900px) {
-
-            #maingrid {
-                grid-template-columns: 1fr !important;
-                grid-template-rows: auto 1fr !important;
-            }
-
+        .setting-list {
+            display: flex;
+            flex-direction: column;
         }
 
-    </style>
+        .setting-list .setting-item {
+            display: flex; gap: .5rem;
+            align-items: center;
 
-    @yield("head.pages")
+            background: transparent;
+            border: none;
+            border-radius: .25rem;
+
+            padding: .5rem .5rem;
+
+            font-size: 16px;
+            color: var(--bs-secondary-color);
+
+            cursor: pointer;
+            transition: background-color 250ms, color 250ms;
+        }
+
+        .setting-list .setting-item:hover, .setting-list .setting-item.active {color: var(--bs-body-color); background-color: var(--tertiary-hover-subtle-bg);}
+
+    </style>
 
 @endsection
