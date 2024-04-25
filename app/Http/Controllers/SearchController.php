@@ -25,8 +25,6 @@ class SearchController extends Controller
 
         $results = $response->json();
 
-        // dd($results);
-
         return view("search", [
             "results" => $results
         ]);
