@@ -33,10 +33,12 @@
             <div class="p-2 overflow-auto d-flex flex-column gap-2 flex-grow-1" id="body" data-settings-tab>
                 <div class="bg-body-tertiary rounded p-2 d-flex align-items-center" role="button" onclick="openSettingTab('quality')"><p class="m-0">Quality</p><i class="fi fi-sr-arrow-right ms-auto"></i></div>
                 <div class="bg-body-tertiary rounded p-2 d-flex align-items-center" role="button" onclick="openSettingTab('subtitles')"><p class="m-0">Subtitles</p><i class="fi fi-sr-arrow-right ms-auto"></i></div>
+                <div class="bg-body-tertiary rounded p-2 d-flex align-items-center" role="button" onclick="openSettingTab('corsproviders')"><p class="m-0">Cors Providers</p><i class="fi fi-sr-arrow-right ms-auto"></i></div>
                 <div class="bg-body-tertiary rounded p-2 d-flex align-items-center" role="button" onclick="settingUpdate('fillscreen', undefined, 'switch', this)" id="fillscreen"><p class="m-0">Fill Screen</p><p class="m-0 ms-auto" id="label">Off</p></div>
             </div>
             <div class="p-2 overflow-auto d-flex flex-column gap-2 flex-grow-1 d-none" id="subtitles" data-settings-tab></div>
             <div class="p-2 overflow-auto d-flex flex-column gap-2 flex-grow-1 d-none" id="quality" data-settings-tab></div>
+            <div class="p-2 overflow-auto d-flex flex-column gap-2 flex-grow-1 d-none" id="corsproviders" data-settings-tab></div>
         </div>
     
         <div id="controls">
@@ -62,24 +64,27 @@
         <div class="position-absolute top-0 start-0 w-100 h-100 pe-none user-select-none" id="overlays"></div>
     </div>
 
-    <div id="bottombuttons" class="d-flex align-items-center rounded-bottom" style="background-color: #000; margin-top: -20px; padding-top: 20px;">
+    <div id="bottombuttons" class="d-flex flex-wrap align-items-center rounded-bottom" style="background-color: #000; margin-top: -20px; padding-top: 20px;">
         <button class="btn ms-2" onclick="tryPrevEp()">Prev</button>
         <button class="btn" onclick="tryNextEp()">Next</button>
-        <button class="btn ms-auto" id="autoskip">Skip OP&ED <span class="text-success">On</span></button>
-        @auth
-            <div class="watchlist-dropdown">
-                <button class="btn"><span>{{ $watchlist["label"] }}</span><i class="fi fi-sr-caret-down"></i></button>
-                <div class="dropdown">
-                    <button class="dropdown-item {{ ($watchlist["value"] === "watching") ? "active" : "" }}" data-dropdown-type="watching">Watching</button>
-                    <button class="dropdown-item {{ ($watchlist["value"] === "planning") ? "active" : "" }}" data-dropdown-type="planning">Planning</button>
-                    <button class="dropdown-item {{ ($watchlist["value"] === "completed") ? "active" : "" }}" data-dropdown-type="completed">Completed</button>
-                    <button class="dropdown-item {{ ($watchlist["value"] === "paused") ? "active" : "" }}" data-dropdown-type="paused">Paused</button>
-                    <button class="dropdown-item {{ ($watchlist["value"] === "dropped") ? "active" : "" }}" data-dropdown-type="dropped">Dropped</button>
-                    <div class="dropdown-item separator"></div>
-                    <button class="dropdown-item" data-dropdown-type="remove">Remove</button>
+
+        <div class="d-flex flex-wrap align-items-center ms-auto justify-content-end">
+            <button class="btn ms-auto" id="autoskip">Skip OP&ED <span class="text-success">On</span></button>
+            @auth
+                <div class="watchlist-dropdown">
+                    <button class="btn"><span>{{ $watchlist["label"] }}</span><i class="fi fi-sr-caret-down"></i></button>
+                    <div class="dropdown">
+                        <button class="dropdown-item {{ ($watchlist["value"] === "watching") ? "active" : "" }}" data-dropdown-type="watching">Watching</button>
+                        <button class="dropdown-item {{ ($watchlist["value"] === "planning") ? "active" : "" }}" data-dropdown-type="planning">Planning</button>
+                        <button class="dropdown-item {{ ($watchlist["value"] === "completed") ? "active" : "" }}" data-dropdown-type="completed">Completed</button>
+                        <button class="dropdown-item {{ ($watchlist["value"] === "paused") ? "active" : "" }}" data-dropdown-type="paused">Paused</button>
+                        <button class="dropdown-item {{ ($watchlist["value"] === "dropped") ? "active" : "" }}" data-dropdown-type="dropped">Dropped</button>
+                        <div class="dropdown-item separator"></div>
+                        <button class="dropdown-item" data-dropdown-type="remove">Remove</button>
+                    </div>
                 </div>
-            </div>
-        @endauth
+            @endauth
+        </div>
     </div>
 
 </div>
@@ -239,6 +244,13 @@
             $("#video video").addClass("fillscreen");
             $("#video #settings #fillscreen #label").html("On");
         }
+
+        let corsProvidersKeys = Object.keys(corsProviders);
+        $("#video #settings #corsproviders").append(`<div class="bg-body-tertiary rounded p-2 d-flex align-items-center gap-2" role="button" onclick="changeCorsProvider(this, 'disabled')"><input class="form-check-input m-0" type="radio" name="subtitlesRadioGroup" disabled ${!corsProvider || corsProvider === "disabled" ? "checked" : ""}><p class="m-0">Disabled</p><i class="fi fi-sr-subtitles ms-auto"></i></div>`);
+        for (let i = 0; i < corsProvidersKeys.length; i++) {
+            $("#video #settings #corsproviders").append(`<div class="bg-body-tertiary rounded p-2 d-flex align-items-center gap-2" role="button" onclick="changeCorsProvider(this, '${corsProvidersKeys[i]}')"><input class="form-check-input m-0" type="radio" name="subtitlesRadioGroup" disabled ${corsProvider === corsProvidersKeys[i] ? "checked" : ""}><p class="m-0">${corsProvidersKeys[i]}</p><i class="fi fi-sr-subtitles ms-auto"></i></div>`);
+        }
+        corsProvidersKeys = undefined;
     }
 
 
@@ -429,6 +441,13 @@
                 localStorage.setItem("videoquality", "auto");
                 hlsStream.loadLevel = -1;
             }
+            $(elem).children("input").prop("checked", true);
+        }
+
+        function changeCorsProvider(elem, provider) {
+            localStorage.setItem("corsprovider", provider);
+            corsProvider = provider;
+            loadVideo(loadedUrl);
             $(elem).children("input").prop("checked", true);
         }
 

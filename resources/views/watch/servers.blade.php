@@ -1,7 +1,6 @@
 <div id="servers" class="bg-body-secondary p-2 rounded d-flex flex-column gap-2">
     <div id="sub" class="d-flex align-items-center gap-2">SUB: <div class="d-flex gap-2 flex-wrap"></div></div>
     <div id="dub" class="d-flex align-items-center gap-2">DUB: <div class="d-flex gap-2 flex-wrap"></div></div>
-
 </div>
 
 

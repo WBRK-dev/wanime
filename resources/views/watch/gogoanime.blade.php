@@ -38,8 +38,8 @@
             $("#servers").addClass("d-none");
             $("#video #wanimelogo #backup").removeClass("d-none");
 
-            // Disable cors because gogo does not use cors.
-            cors = false;
+            // Disable cors because gogo do not need cors.
+            corsProvider = undefined;
 
             if (aniwatchToGogoIds["{{$anime["anime"]["info"]["id"]}}"]) {
                 gogoProvider = true;

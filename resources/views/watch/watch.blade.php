@@ -156,8 +156,10 @@
         let dub = (localStorage.getItem("dubbedvideo") === "true") ? true : false;
         let autoSkip = (localStorage.getItem("autoskip") === "false") ? false : true;
         let videoserver = localStorage.getItem("videoserver") ?? "vidstreaming";
-        let cors = true;
         let gogoProvider = false;
+
+        let corsProvider = localStorage.getItem("corsprovider") || "disabled";
+        let corsProviders = {"vercel": "{{config("app.cors_url")}}", "local": "http://147.185.221.16:47043/api/cors/cors?url="};
 
         let anime = {episodes: JSON.parse("{{ $epstring }}".replace(/&quot;/g, '"')) };
         let malID;
@@ -169,9 +171,9 @@
         let subtitleLang = localStorage.getItem("subtitleslang") || "English";
         let subtitles = [];
         let subtitlesEnabled = localStorage.getItem("subtitlesenabled") === "true" ? true : false;
-        // let subtitlesEnabled = true;
 
         let hlsStream;
+        let loadedUrl;
 
         let fillScreen = localStorage.getItem("fillscreen") === "true" ? true : false;
 
@@ -204,6 +206,7 @@
             let response;
             try {
                 response = await (await fetch("{{config("app.exp_api_url")}}/anime/servers?episodeId="+id)).json();
+                if (response.status === 500) throw new Error();
             } catch (error) {
                 $("#video #loadercircle").addClass("d-none");
                 $("#video #errorcircle").removeClass("d-none");
@@ -238,19 +241,12 @@
             try {
                 // response = await (await fetch(`{{config("app.exp_api_url")}}/anime/episode-srcs?id=${episodeId}&server=${server}&category=${category}`)).json();
                 response = await (await fetch(`{{config("app.exp_api_url")}}/anime/episode-srcs?id=${episodeId}&category=${category}`)).json();
+                if (response.status === 500) throw new Error();
                 malID = response.malID;
             } catch (error) {
                 $("#video #loadercircle").addClass("d-none");
                 $("#video #errorcircle").removeClass("d-none");
                 wpopups.show("error");
-                return;
-            }
-
-            if (response.status === 500) {
-                $("#video #loadercircle").addClass("d-none");
-                $("#video #errorcircle").removeClass("d-none");
-                // wpopups.show("error");
-                initGogo();
                 return;
             }
 
@@ -293,26 +289,31 @@
 
             }
 
-            loadVideo(url);
+            loadVideo(url, { intro: response.intro, outro: response.outro });
         }
 
-        async function loadVideo(url) {
+        async function loadVideo(url, skipTimes) {
+            loadedUrl = url;
+            if (hlsStream) {
+                hlsStream.destroy();
+                hlsStream = undefined;
+            }
             if (Hls.isSupported()) {
                 hlsStream = new Hls();
-                // hlsStream.on(Hls.Events.ERROR, function (event, data) {
-                //     switch (data.type) {
-                //         case Hls.ErrorTypes.NETWORK_ERROR:
-                //             $("#video #loadercircle").addClass("d-none");
-                //             $("#video #errorcircle").removeClass("d-none");
-                //             if (gogoProvider) wpopups.show("error");
-                //             else {initGogo(); hlsStream.detachMedia();}
-                //             return;
-                //         default:
-                //             break;
-                //     }
-                //     return;
-                // });
-                hlsStream.loadSource(cors ? `{{config("app.cors_url")}}${url}` : url);
+                hlsStream.on(Hls.Events.ERROR, function (event, data) {
+                    switch (data.type) {
+                        case Hls.ErrorTypes.NETWORK_ERROR:
+                            if (data.details === "manifestLoadError") {
+                                $("#video #loadercircle").addClass("d-none");
+                                $("#video #errorcircle").removeClass("d-none");
+                                // if (gogoProvider) wpopups.show("error");
+                                // else {initGogo(); hlsStream.detachMedia();}
+                                wpopups.show("error"); hlsStream.detachMedia();
+                                return;
+                            }
+                    }
+                });
+                hlsStream.loadSource(corsProvider && corsProvider !== "disabled" ? `${corsProviders[corsProvider]}${url}` : url);
                 hlsStream.attachMedia(video);
                 hlsStream.on(Hls.Events.MANIFEST_PARSED, function() {
                     $("#video #loadercircle").addClass("d-none");
@@ -332,40 +333,41 @@
                         $("#video #settings #quality").append(`<div class="bg-body-tertiary rounded p-2 d-flex align-items-center gap-2" role="button" onclick="changeQuality(this, ${i})"><input class="form-check-input m-0" type="radio" name="qualityRadioGroup" disabled ${selectedQuality === i ? "checked" : ""}><p class="m-0">${qualities[i].height}p</p></div>`);
                     }
 
+                    setTimeout(() => {
+                        if (typeof skipTimes !== "undefined") {
+                            if (skipTimes.intro.start || skipTimes.intro.end) renderSkipTime(skipTimes.intro.start, skipTimes.intro.end, "intro");
+                            if (skipTimes.outro.start || skipTimes.outro.end) renderSkipTime(skipTimes.outro.start, skipTimes.outro.end, "outro");
+                        }
+                    }, 3000);
+
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
             }
-            // setTimeout(() => {
-            //     loadSkipTimes();
-            // }, 1000);
         }
+        
+        async function renderSkipTime(start, end, type) {
+            let duration = document.querySelector("video").duration;
+            const track = document.querySelector("#video #track");
 
-        async function loadSkipTimes() {
-            let skipTimes = {};
-            if (malID) {
-                try {
-                    skipTimes = await (await fetch(`https://api.aniskip.com/v2/skip-times/${malID}/${episodeIndex + 1}?types=op&types=ed&types=mixed-op&types=mixed-ed&episodeLength=0`)).json();
-                } catch (error) {console.error("Error while fetching skip times.", error);}
+            if (!duration) {
+                const repeater = resolve => setTimeout(() => {
+                    console.log("test");
+                    duration = document.querySelector("video").duration;
+                    if (duration) resolve();
+                    else repeater(resolve);
+                }, 200);
+                await (new Promise(resolve => repeater(resolve)));
             }
-            if (skipTimes.found) {
-                try {
-                    let duration = video.duration;
-                    let track = document.querySelector("#video #track");
-                    for (let i = 0; i < skipTimes.results.length; i++) {
-                        let skipTimeElem = document.createElement("div");
-                        skipTimeElem.classList.add("skiptime");
-                        skipTimeElem.style.left = `${100 / duration * skipTimes.results[i].interval.startTime}%`;
-                        skipTimeElem.style.width = `${100 / duration * (skipTimes.results[i].interval.endTime - skipTimes.results[i].interval.startTime)}%`;
-                        skipTimeElem.style.backgroundColor = skipTimes.results[i].skipType === "op" ? "green" : (skipTimes.results[i].skipType === "ed" ? "red" : "blue");
-                        track.appendChild(skipTimeElem);
-    
-                        skipTimes.results[i].interval.skipType = skipTimes.results[i].skipType;
-    
-                        episodeSkipTimes.push(skipTimes.results[i].interval);
-                    }
-                } catch (error) {console.error("Error while loading the skiptimes.", error);}
-            }
+            
+            const skipTimeElem = document.createElement("div");
+            skipTimeElem.classList.add("skiptime");
+            skipTimeElem.style.left = `${100 / duration * start}%`;
+            skipTimeElem.style.width = `${100 / duration * (end - start)}%`;
+            skipTimeElem.style.backgroundColor = type === "intro" ? "green" : (type === "outro" ? "blue": "red");
+            track.appendChild(skipTimeElem);
+
+            episodeSkipTimes.push({ startTime: start, endTime: end, skipType: type || "segment" });
         }
 
         let vttParser = new WebVTT.Parser(window, WebVTT.StringDecoder());
