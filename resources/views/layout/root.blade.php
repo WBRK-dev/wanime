@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ config("app.url") }}/index.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="{{config("app.url")}}/cookies.js"></script>
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="{{config("app.url")}}/manifest.json">
 
     {{-- Js modules --}}
     <script src="{{config("app.url")}}/wanime-style/modules-js/account-dropdown.js"></script>
@@ -17,10 +17,10 @@
     @yield("head")
     <title>WAnime{{ isset($page_title) ? " - $page_title" : "" }}</title>
 </head>
-<body data-bs-theme="dark" class="d-flex flex-column" style="min-height: 100vh; min-height: 100dvh;">
+<body data-bs-theme="dark" class="d-flex flex-column overflow-x-hidden" style="min-height: 100vh; min-height: 100dvh;">
     <script>(localStorage.getItem("bstheme") && localStorage.getItem("bstheme") === "light") ? document.querySelector("body").setAttribute("data-bs-theme", "light") : false</script>
     @include('layout.navbar')
-    
+
     <div class="d-flex justify-content-center flex-grow-1">
         <div style="width: min(1920px, 100%);">
             @yield('body')
