@@ -43,7 +43,7 @@
     
         <div id="controls">
     
-            <div id="track" class="position-absolute" data-cancel-search></div>
+            <div id="track-wrapper" data-cancel-search><div id="track" class="position-absolute"></div><div style="display: none;" id="track-scrub-time">00:00</div></div>
     
             <div id="buttons" class="position-absolute bottom-0 start-0 d-flex flex-wrap p-2 w-100" style="box-sizing: border-box;">
                 <div id="play" class="p-2 fi-switch" onclick="togglePlay()" data-cancel-search><i class="fi fi-16 fi-sr-play" id="disabled"></i><i class="fi fi-16 fi-sr-pause" id="enabled"></i></div>
@@ -144,16 +144,17 @@
             if (!tracking) updateTrack();
         });
 
-        $("#video #track").on("mousedown", (e) => {
+        $("#video #track-wrapper").on("pointerdown", (e) => {
             tracking = true;
-            let pos = document.querySelector("#video #track").getBoundingClientRect()
+            let pos = document.querySelector("#video #track-wrapper").getBoundingClientRect();
             trackPos.x = pos.x;
             trackPos.width = Math.round(pos.width);
             video.pause();
+            $("#video #track-wrapper #track-scrub-time").css("display", "");
             updateTrackMouseMove(e);
         });
 
-        $("body").on("mouseup", (e) => {
+        $("body").on("pointerup", (e) => {
             if (tracking) {
 
                 let width = 0;
@@ -162,13 +163,15 @@
                 if (width > 100) {width = 100};
                 video.currentTime = video.duration * (width / 100);
 
+                $("#video #track-wrapper #track-scrub-time").css("display", "none");
+
                 video.play();
                 updateTrack();
             }
             tracking = false;
         });
 
-        $("body").on("mousemove", (e) => {
+        $("body").on("pointermove", (e) => {
             if (tracking) {
                 updateTrackMouseMove(e);
             }
@@ -267,6 +270,11 @@
         let totalMinutes = Math.round(Math.floor((video.duration || 0) / 60) % 60);
         let totalSeconds = Math.round((video.duration || 0) % 60);
 
+        if (currentSeconds === 60) {currentSeconds = 0; currentMinutes++;}
+        if (currentMinutes === 60) {currentMinutes = 0; currentHours++;}
+        if (totalSeconds === 60) {totalSeconds = 0; totalMinutes++;}
+        if (totalMinutes === 60) {totalMinutes = 0; totalHours++;}
+
         currentHours = (currentHours < 10) ? `0${currentHours}` : currentHours;
         currentMinutes = (currentMinutes < 10) ? `0${currentMinutes}` : currentMinutes;
         currentSeconds = (currentSeconds < 10) ? `0${currentSeconds}` : currentSeconds;
@@ -314,6 +322,27 @@
         if (width < 0) {width = 0};
         if (width > 100) {width = 100};
         $("#video #track").css("--width", Math.round(width * 10000) / 10000+"%");
+
+        let videoScrubTime = (video.duration || 0) / 100 * width;
+
+        let currentHours = Math.floor(videoScrubTime / 3600);
+        let currentMinutes = Math.round(Math.floor(videoScrubTime / 60) % 60);
+        let currentSeconds = Math.round(videoScrubTime % 60);
+        let totalHours = Math.floor((video.duration || 0) / 3600);
+        let totalMinutes = Math.round(Math.floor((video.duration || 0) / 60) % 60);
+        let totalSeconds = Math.round((video.duration || 0) % 60);
+
+        if (currentSeconds === 60) {currentSeconds = 0; currentMinutes++;}
+        if (currentMinutes === 60) {currentMinutes = 0; currentHours++;}
+        if (totalSeconds === 60) {totalSeconds = 0; totalMinutes++;}
+        if (totalMinutes === 60) {totalMinutes = 0; totalHours++;}
+
+        currentHours = (currentHours < 10) ? `0${currentHours}` : currentHours;
+        currentMinutes = (currentMinutes < 10) ? `0${currentMinutes}` : currentMinutes;
+        currentSeconds = (currentSeconds < 10) ? `0${currentSeconds}` : currentSeconds;
+
+        $("#video #track-wrapper #track-scrub-time").css("left", `${ Math.round(width * 10000) / 10000 }%`);
+        $("#video #track-wrapper #track-scrub-time").text(`${(totalHours !== 0) ? `${currentHours}:` : ""}${currentMinutes}:${currentSeconds}`);
 
     }
 
@@ -510,16 +539,32 @@
         cursor: none;
     }
 
-    #video #track {
+    #video #track-wrapper {
         width: calc(100% - 2rem);
+        height: 12px;
+        box-sizing: border-box;
+
+        left: 1rem;
+        bottom: 44px;
+
+        position: absolute;
+        z-index: 1;
+    }
+
+    #video #track {
+        width: 100%;
         height: 4px;
         background-color: #5f5f5f;
         box-sizing: border-box;
 
-        left: 1rem;
-        bottom: 48px;
+        left: 0; top: 50%;
+        transform: translateY(-50%);
 
         position: relative;
+        transition: height 200ms;
+    }
+    #video #track-wrapper:hover #track, #video #track-wrapper:active #track, #video #track-wrapper:focus #track {
+        height: 16px;
     }
     #video #track::before {
         content: "";
@@ -535,6 +580,18 @@
     #video #track .skiptime {
         position: absolute;
         height: 100%;
+    }
+
+    #video #track-wrapper #track-scrub-time {
+        padding: .25rem .5rem;
+        background-color: #00000057;
+        backdrop-filter: blur(2px);
+        border-radius: .5rem;
+
+        position: absolute;
+        bottom: calc(100% + .5rem);
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #video #controls {
