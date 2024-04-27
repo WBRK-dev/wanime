@@ -5,10 +5,10 @@
 
 
         <div class="search">
+            <i class="fi fi-sr-search"></i>
             <form action="search" method="get">
                 <input type="text" placeholder="Search..." name="search">
             </form>
-            <i class="fi fi-sr-search"></i>
         </div>
 
         <div class="search-button">
@@ -63,8 +63,10 @@
 @endif
 
 <div class="search-dropdown">
-    <form action="search" method="get">
-        <input type="text" placeholder="Search..." name="search">
-    </form>
-    <i class="fi fi-sr-search"></i>
+    <div class="search d-flex">
+        <i class="fi fi-sr-search"></i>
+        <form action="search" method="get" class="flex-grow-1">
+            <input type="text" placeholder="Search..." name="search" style="width: 100%; box-sizing: border-box;">
+        </form>
+    </div>
 </div>
