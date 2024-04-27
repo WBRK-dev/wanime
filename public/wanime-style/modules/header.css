@@ -162,11 +162,11 @@
     font-size: 18px;
 }
 
-@media only screen and (max-width: 560px) {
+@media only screen and (max-width: 640px) {
     .w-header .search {display: none;}
 }
 
-@media only screen and (min-width: 561px) {
+@media only screen and (min-width: 641px) {
     .w-header .search-button {display: none;}
     .search-dropdown {display: none !important;}
 }
