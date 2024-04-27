@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
@@ -40,7 +41,10 @@ Route::view("/subscriptions/buy", "subscriptions.buy");
 
 Route::view("/resourcesused", "resourcesused");
 
-Route::view("/login", "account.login");
+Route::get("/login", function () {
+    if (Auth::check()) return redirect("/");
+    else return view("account.login");
+});
 
 // Admin ------
 
