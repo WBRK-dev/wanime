@@ -23,7 +23,7 @@ class AuthenticatedSessionController extends Controller
         if (Auth::attempt($credentials, $request->input("stayloggedin") === "on" ? true : false)) {
             $request->session()->regenerate();
  
-            return back();
+            return redirect("/");
         }
  
         return back()->withErrors([
