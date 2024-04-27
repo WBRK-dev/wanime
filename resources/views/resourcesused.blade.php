@@ -4,7 +4,7 @@
     
     <div class="d-flex justify-content-center p-2"><div class="d-flex flex-column gap-2 w-100" style="max-width: 1000px;">
     
-        <a class="d-flex gap-2 border rounded p-2 text-decoration-none text-body" href="https://laravel.com/" target="_blank">
+        <a class="card gap-2 border rounded p-2 text-decoration-none text-body" href="https://laravel.com/" target="_blank">
             <img src="https://laravel.com/img/logomark.min.svg" alt="Laravel Logo" style="max-height: 100px; width: 30%; object-fit: contain; flex-shrink: 0;">
             <div>
                 <h4 class="">Laravel Framework</h4>
@@ -12,7 +12,7 @@
             </div>
         </a>
 
-        <a class="d-flex gap-2 border rounded p-2 text-decoration-none text-body" href="https://getbootstrap.com/" target="_blank">
+        <a class="card gap-2 border rounded p-2 text-decoration-none text-body" href="https://getbootstrap.com/" target="_blank">
             <img src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png" alt="Bootstrap Logo" style="max-height: 100px; width: 30%; object-fit: contain; flex-shrink: 0;">
             <div>
                 <h4 class="">Bootstrap</h4>
@@ -20,7 +20,7 @@
             </div>
         </a>
 
-        <a class="d-flex gap-2 border rounded p-2 text-decoration-none text-body" href="https://github.com/ghoshritesh12/aniwatch-api" target="_blank">
+        <a class="card gap-2 border rounded p-2 text-decoration-none text-body" href="https://github.com/ghoshritesh12/aniwatch-api" target="_blank">
             <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="Github Logo" style="max-height: 100px; width: 30%; object-fit: contain; flex-shrink: 0;">
             <div>
                 <h4 class="">Aniwatch API by ghoshritesh12</h4>
@@ -29,5 +29,26 @@
         </a>
     
     </div></div>
+
+@endsection
+
+@section("head")
+
+    <style>
+
+        .card {
+            display: flex;
+        }
+
+        @media only screen and (max-width: 560px) {
+            .card {
+                flex-direction: column;
+            }
+            .card img {
+                width: 100% !important;
+            }
+        }
+
+    </style>
 
 @endsection
