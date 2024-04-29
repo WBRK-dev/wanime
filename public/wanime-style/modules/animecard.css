@@ -22,7 +22,7 @@
 
 /*  d-flex justify-content-center gap-1 mt-1 me-1 mb-0 position-absolute top-0 start-50 translate-middle-x */
 
-.animecard .episodes {
+.episodes {
     display: flex;
     justify-content: center;
     gap: .25rem;
@@ -36,7 +36,7 @@
 
 /* d-flex align-items-center gap-2 fs-6 m-0 px-2 py-1 bg-body-secondary */
 /* d-flex align-items-center gap-2 fs-6 m-0 px-2 py-1 bg-body-tertiary */
-.animecard .episodes .episode {
+.episodes .episode {
     display: flex;
     align-items: center;
     gap: .5rem;

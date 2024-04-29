@@ -13,6 +13,7 @@
 @import url("modules/input.css");
 @import url("modules/watchlist-dropdown.css");
 @import url("modules/watch-episodes.css");
+@import url("modules/pagination.css");
 
 * {
     margin: 0;
