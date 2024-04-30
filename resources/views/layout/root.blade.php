@@ -12,7 +12,7 @@
     {{-- Js modules --}}
     <script src="{{config("app.url")}}/wanime-style-1/modules-js/account-dropdown.js"></script>
     <script src="{{config("app.url")}}/wanime-style-1/modules-js/search.js"></script>
-    <script src="{{config("app.url")}}/wanime-style-1/index.css"></script>
+    <link rel="stylesheet" href="{{ config("app.url") }}/wanime-style-1/index.css">
 
     @include("layout.hit")
     @yield("head")
