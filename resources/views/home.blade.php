@@ -182,7 +182,7 @@
 
 @section("head")
     
-    <script src="{{config("app.url")}}/wanime-style/modules-js/carousel.js"></script>
+    <script src="{{config("app.url")}}/wanime-style-1/modules-js/carousel.js"></script>
     <style>
         #animegrid {
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 

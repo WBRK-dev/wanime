@@ -10,8 +10,8 @@
     <link rel="manifest" href="{{config("app.url")}}/manifest.json">
 
     {{-- Js modules --}}
-    <script src="{{config("app.url")}}/wanime-style/modules-js/account-dropdown.js"></script>
-    <script src="{{config("app.url")}}/wanime-style/modules-js/search.js"></script>
+    <script src="{{config("app.url")}}/wanime-style-1/modules-js/account-dropdown.js"></script>
+    <script src="{{config("app.url")}}/wanime-style-1/modules-js/search.js"></script>
 
     @include("layout.hit")
     @yield("head")

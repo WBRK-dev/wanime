@@ -91,7 +91,7 @@
 @section("head")
 
     <script src="{{config("app.url")}}/vtt.min.js"></script>
-    <script src="{{config("app.url")}}/wanime-style/modules-js/popups.js"></script>
+    <script src="{{config("app.url")}}/wanime-style-1/modules-js/popups.js"></script>
     <script src="{{config("app.url")}}/c/ffmpeg/ffmpeg.js"></script>
     <script src="{{config("app.url")}}/c/ffmpeg-util/index.js"></script>
     <script src="{{config("app.url")}}/c/m3u8-parser/index.js"></script>

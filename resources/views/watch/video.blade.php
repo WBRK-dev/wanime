@@ -94,7 +94,7 @@
 
 @section("head.video")
     
-<script src="{{config("app.url")}}/wanime-style/modules-js/watchlist-dropdown.js"></script>
+<script src="{{config("app.url")}}/wanime-style-1/modules-js/watchlist-dropdown.js"></script>
 <script>
 
     function watchlistStatusUpdate(state) {
