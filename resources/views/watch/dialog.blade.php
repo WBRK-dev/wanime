@@ -38,4 +38,25 @@
 
     </div>
 
+    <div class="w-popup" popup-id="download">
+
+        <div class="w-popup-header">
+            <h4>Download Episode</h4>
+        </div>
+
+        <div class="w-popup-body">
+            <div class="d-flex justify-content-center d-none" id="spinner"><div class="spinner"></div></div>
+            <div id="resolutions" class="d-flex justify-content-center flex-wrap gap-2 d-none"></div>
+            <div id="progressbar" class="d-none">
+                <div class="d-flex justify-content-between" id="data"><p id="left"></p><p id="right"></p></div>
+                <div class="w-progressbar"></div>
+            </div>
+        </div>
+
+        <div class="w-popup-buttonbox">
+            <button class="btn btn-secondary" onclick="wpopups.hide()">Cancel</button>
+        </div>
+
+    </div>
+
 </div>

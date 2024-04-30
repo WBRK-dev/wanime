@@ -14,6 +14,7 @@
 @import url("modules/watchlist-dropdown.css");
 @import url("modules/watch-episodes.css");
 @import url("modules/pagination.css");
+@import url("modules/progressbar.css");
 
 * {
     margin: 0;

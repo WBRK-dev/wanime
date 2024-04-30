@@ -1,0 +1,19 @@
+.w-progressbar {
+    height: 30px;
+    border-radius: .5rem;
+    background-color: var(--bs-tertiary-bg);
+    overflow: hidden;
+    position: relative;
+}
+
+.w-progressbar::after {
+    content: "";
+    background-color: var(--bs-success);
+
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: var(--width, 0%);
+
+    transition: width 200ms ease-out;
+}

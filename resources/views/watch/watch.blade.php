@@ -92,7 +92,11 @@
 
     <script src="{{config("app.url")}}/vtt.min.js"></script>
     <script src="{{config("app.url")}}/wanime-style/modules-js/popups.js"></script>
+    <script src="{{config("app.url")}}/c/ffmpeg/ffmpeg.js"></script>
+    <script src="{{config("app.url")}}/c/ffmpeg-util/index.js"></script>
+    <script src="{{config("app.url")}}/c/m3u8-parser/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.14/dist/hls.min.js"></script>
+    @include("watch.download")
     <style>
 
         @media only screen and (max-width: 1400px) {
@@ -184,6 +188,7 @@
             episodeIndex = i;
             episodeSkipTimes = [];
             subtitles = [];
+            loadedUrl = undefined
             $("#video #settings #subtitles").html("");
             $("#video #settings #quality").html("");
             $("#video #track").html("");
@@ -293,7 +298,6 @@
         }
 
         async function loadVideo(url, skipTimes) {
-            loadedUrl = url;
             if (hlsStream) {
                 hlsStream.destroy();
                 hlsStream = undefined;
@@ -323,6 +327,7 @@
                     setTimeout(() => {
                         $("#video #wanimelogo").addClass("d-none");
                         video.play();
+                        loadedUrl = url;
                     }, 3000);
 
                     let qualities = hlsStream.levels;
@@ -352,7 +357,6 @@
 
             if (!duration) {
                 const repeater = resolve => setTimeout(() => {
-                    console.log("test");
                     duration = document.querySelector("video").duration;
                     if (duration) resolve();
                     else repeater(resolve);

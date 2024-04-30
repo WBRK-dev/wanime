@@ -52,6 +52,8 @@
                 <p class="my-auto mx-1" id="time" data-cancel-search><span id="current">00:00</span>/<span id="total">00:00</span></p>
 
                 <div class="ms-auto d-flex" data-cancel-search>
+                    
+                    <div class="p-2 fi-switch" title="Download Episode" onclick="downloadHandler()"><i class="fi fi-16 fi-sr-download"></i></div>
                     <div class="p-2 fi-switch" onclick="skip(-30)"><i class="fi fi-16 fi-sr-angle-double-small-left"></i></div>
                     <div class="p-2 fi-switch" onclick="skip(30)"><i class="fi fi-16 fi-sr-angle-double-small-right"></i></div>
                     <div class="p-2 fi-switch" onclick="toggleSettings()"><i class="fi fi-16 fi-sr-settings"></i></div>
