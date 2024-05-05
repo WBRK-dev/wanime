@@ -15,7 +15,7 @@ class AdminController extends Controller
     function registrations() {
         if (!in_array(Auth::user()->email, config('app.admin_email'))) {return back();}
 
-        $registrations = Registrations::select("*")->orderBy('name')->limit(30)->get();
+        $registrations = Registrations::orderBy('name')->limit(30)->get();
         
         return view("admin.registrations", [
             "registrations" => $registrations

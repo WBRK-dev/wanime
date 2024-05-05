@@ -80,14 +80,14 @@
             <a href="{{ $_ENV["APP_URL"] }}/watchlist" class="ms-auto mb-0">See All</a>
         </div>
 
-        @if (count($history) > 0)
-            <div id="animegrid" class="d-grid column-gap-2 mb-4 overflow-hidden" style="--rows-2: {{ count($history) > 4 ? "1fr 1fr" : "1fr" }}; --rows-3: {{ count($history) > 4 ? "1fr 1fr 1fr" : (count($history) > 2 ? "1fr 1fr" : "1fr") }};">
+        @if ($history->count() > 0)
+            <div id="animegrid" class="d-grid column-gap-2 mb-4 overflow-hidden" style="--rows-2: {{ $history->count() > 4 ? "1fr 1fr" : "1fr" }}; --rows-3: {{ $history->count() > 4 ? "1fr 1fr 1fr" : ($history->count() > 2 ? "1fr 1fr" : "1fr") }};">
                 @foreach ($history as $historyItem)
                     @include("modules.animecard", [
-                        "path" => "/watch?id=".$historyItem["animeId"],
-                        "title" => $historyItem["title"],
-                        "poster" => $historyItem["image"],
-                        "currentepisode" => $historyItem["episode"]
+                        "path" => "/watch?id=".$historyItem->animeId,
+                        "title" => $historyItem->anime->title,
+                        "poster" => $historyItem->anime->image,
+                        "currentepisode" => $historyItem->episode
                     ])
                 @endforeach
             </div>
@@ -138,18 +138,18 @@
                 <div class="d-flex flex-column p-2 rounded bg-body-secondary flex-shrink-0" style="width: 300px;">
                 
                     <div class="d-flex align-items-center">
-                        <p class="text-body-secondary m-0 d-flex align-items-center gap-2" style="font-size: 14px;"><i class="fi fi-sr-user"></i>{{ $review["name"] }}</p>
+                        <p class="text-body-secondary m-0 d-flex align-items-center gap-2" style="font-size: 14px;"><i class="fi fi-sr-user"></i>{{ $review->user->name }}</p>
 
-                        <p class="text-body-secondary m-0 ms-auto" style="font-size: 14px;">{{ $review["timeAgo"] }}</p>
+                        <p class="text-body-secondary m-0 ms-auto" style="font-size: 14px;">{{ $review->timeAgo() }}</p>
                     </div>
-                    <a class="m-0 text-decoration-none text-body mb-2" href="{{config("app.url")}}/anime?id={{ $review["animeId"] }}">{{ $review["title"] }}</a>
+                    <a class="m-0 text-decoration-none text-body mb-2" href="{{config("app.url")}}/anime?id={{ $review->animeId }}">{{ $review->anime->title }}</a>
 
                     <div class="d-flex justify-content-evenly py-2 mt-auto">
-                        <i class="fi fi-{{ $review["stars"] > 0 ? "s" : "r" }}r-star fi-24"></i>
-                        <i class="fi fi-{{ $review["stars"] > 1 ? "s" : "r" }}r-star fi-24"></i>
-                        <i class="fi fi-{{ $review["stars"] > 2 ? "s" : "r" }}r-star fi-24"></i>
-                        <i class="fi fi-{{ $review["stars"] > 3 ? "s" : "r" }}r-star fi-24"></i>
-                        <i class="fi fi-{{ $review["stars"] > 4 ? "s" : "r" }}r-star fi-24"></i>
+                        <i class="fi fi-{{ $review->stars > 0 ? "s" : "r" }}r-star fi-24"></i>
+                        <i class="fi fi-{{ $review->stars > 1 ? "s" : "r" }}r-star fi-24"></i>
+                        <i class="fi fi-{{ $review->stars > 2 ? "s" : "r" }}r-star fi-24"></i>
+                        <i class="fi fi-{{ $review->stars > 3 ? "s" : "r" }}r-star fi-24"></i>
+                        <i class="fi fi-{{ $review->stars > 4 ? "s" : "r" }}r-star fi-24"></i>
                     </div>
 
                 </div>

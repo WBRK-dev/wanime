@@ -17,9 +17,9 @@
         <div class="d-grid column-gap-2 overflow-hidden" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));">
             @foreach ($anime as $animeItem)
                 @include("modules.animecard", [
-                    "id" => $animeItem["animeId"],
-                    "title" => $animeItem["title"],
-                    "poster" => $animeItem["image"]
+                    "id" => $animeItem->animeId,
+                    "title" => $animeItem->anime->title,
+                    "poster" => $animeItem->anime->image
                 ])
             @endforeach
         </div>

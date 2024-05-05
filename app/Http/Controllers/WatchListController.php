@@ -16,7 +16,8 @@ class WatchListController extends Controller
         $allowedApps = ["completed", "planning", "watching", "paused", "dropped"];
         if (!in_array($app, $allowedApps)) {return view("error.500");}
 
-        $anime = Watchlist::select("*")->join("anime", "watchlists.animeId", "=", "anime.animeId")->where('watchlists.userId', Auth::user()->id)->where('watchlists.status', $app)->orderBy('watchlists.updated_at', 'desc')->get();
+        // $anime = Watchlist::select("*")->join("anime", "watchlists.animeId", "=", "anime.animeId")->where('watchlists.userId', Auth::user()->id)->where('watchlists.status', $app)->orderBy('watchlists.updated_at', 'desc')->get();
+        $anime = Auth::user()->watchlistItems->where("status", $app);
 
         return view("watchlist", [
             "anime" => $anime
