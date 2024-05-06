@@ -1,5 +1,6 @@
 # WAnime
-Anime website made with Laravel.
+
+An anime website made with Laravel 10, Bootstrap 5 and an <a href="https://github.com/ghoshRitesh12/aniwatch-api">Anime API</a>. Watch anime, save anime to your watchlist, review an anime and get stats about your watchlist.
 
 ## Features
 - Watch anime
