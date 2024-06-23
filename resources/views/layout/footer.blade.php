@@ -9,7 +9,7 @@
 
     <div>
         <h4 class="fs-5">More</h4>
-        <a class="d-block text-body-secondary mb-1" href="/gogoviewer/" target="_blank">Gogoviewer</a>
+        <a class="d-block text-body-secondary mb-1" href="/animedownloader/" target="_blank">MassAnimeDownloader</a>
         <a class="d-block text-body-secondary mb-1 disabled" href="#">WManga</a>
         <a class="d-block text-body-secondary" href="{{config("app.url")}}/resourcesused">Resources Used</a>
     </div>
