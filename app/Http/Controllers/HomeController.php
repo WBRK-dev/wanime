@@ -34,15 +34,8 @@ class HomeController extends Controller
         }
 
         $response = $response->json();
-        // dd($response);
 
-        // $reviews = Star::join('anime', 'stars.animeId', '=', 'anime.animeId')
-        // ->join('users', 'stars.userId', '=', 'users.id')
-        // ->select("stars.stars", "anime.title", "users.name", "stars.animeId", "stars.created_at")
-        // ->where("users.public_reviews", "=", "public")
-        // ->orderBy("stars.created_at", "desc")->limit(10)->get();
-
-        $reviews = Star::limit(10)->get();
+        $reviews = Star::orderBy("created_at", "desc")->limit(10)->get();
 
         return view("home", [
             "user" => $user,
