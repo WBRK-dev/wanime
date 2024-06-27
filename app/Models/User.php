@@ -16,7 +16,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     public function watchlistItems(): HasMany {
-        return $this->hasMany(Watchlist::class, "userId");
+        return $this->hasMany(Watchlist::class, "userId")->orderBy('updated_at', 'desc');
     }
 
     public function stars(): HasMany {
