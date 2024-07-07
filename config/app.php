@@ -5,8 +5,6 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
-    'admin_email' => explode(',', env('ADMIN_EMAIL')),
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -58,11 +56,6 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-
-    'api_url' => env('API_URL', 'http://localhost'),
-    'exp_api_url' => env('EXPOSED_API_URL', 'http://localhost'),
-    'gogo_api_url' => env('GOGO_API_URL', 'http://localhost'),
-    'cors_url' => env('CORS_URL', 'http://localhost'),
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
 

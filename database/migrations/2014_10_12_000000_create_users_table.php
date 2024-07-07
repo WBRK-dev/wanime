@@ -18,11 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->string("visible_to_public")->default("private");
-            $table->string("save_episode_progress")->default("in_watching");
-            $table->string("public_reviews")->default("public");
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamps();
         });
     }
 

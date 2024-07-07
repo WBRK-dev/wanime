@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,14 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        
-        Blade::directive('admin', function () {
-            return "<?php if(auth()->check() && in_array(auth()->user()->email, config('app.admin_email'))): ?>";
-        });
-    
-        Blade::directive('endadmin', function () {
-            return "<?php endif; ?>";
-        });
-
+        //
     }
 }

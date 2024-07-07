@@ -13,35 +13,26 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request)
+    public function store(LoginRequest $request): Response
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
- 
-        if (Auth::attempt($credentials, $request->input("stayloggedin") === "on" ? true : false)) {
-            $request->session()->regenerate();
- 
-            return redirect("/");
-        }
- 
-        return back()->withErrors([
-            'password' => 'The provided credentials do not match our records.',
-        ]);
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        return response()->noContent();
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): Response
     {
-        Auth::logout();
- 
+        Auth::guard('web')->logout();
+
         $request->session()->invalidate();
-    
+
         $request->session()->regenerateToken();
-    
-        return back();
+
+        return response()->noContent();
     }
 }

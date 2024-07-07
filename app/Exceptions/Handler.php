@@ -27,16 +27,4 @@ class Handler extends ExceptionHandler
             //
         });
     }
-
-    function render($request, Throwable $exception) {
-        if ($this->isHttpException($exception)) {
-            // dd($exception);
-            $code = $exception->getStatusCode();
-            return response()->view('error.error', [
-                "code" => $code,
-                "message" => $exception->getMessage()
-            ], $code);
-        }
-        return parent::render($request, $exception);
-    }
 }

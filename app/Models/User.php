@@ -7,21 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
-use App\Models\Watchlist;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
-    public function watchlistItems(): HasMany {
-        return $this->hasMany(Watchlist::class, "userId")->orderBy('updated_at', 'desc');
-    }
-
-    public function stars(): HasMany {
-        return $this->hasMany(Star::class, "userId");
-    }
 
     /**
      * The attributes that are mass assignable.
@@ -32,8 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'visible_to_public',
-        'save_episode_progress',
     ];
 
     /**
