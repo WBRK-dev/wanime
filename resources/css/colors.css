@@ -1,0 +1,33 @@
+body {
+
+    --app-highlight: #ff0000;
+
+    --app-navbar-bg: var(--body-secondary-bg);
+    --app-anime-info-tabs-bg: var(--body-tertiary-bg);
+    
+    --body-bg: #220000;
+    --body-bg-rgb: 34, 0, 0;
+    --body-color: #fff;
+    --body-hover-bg: #5c2b2b;
+    
+    --body-secondary-bg: #2e0000;
+    --body-secondary-color: #d6d6d6;
+
+    --body-tertiary-bg: #4e0000;
+    --body-tertiary-color: #a3a3a3;
+
+    --primary-bg: #0000ff;
+    --primary-hover-bg: #0000df;
+    --primary-color: #fff;
+
+    --secondary-bg: #777777;
+    --secondary-hover-bg: #646464;
+    --secondary-color: #000;
+
+    --success-bg: #00ff00;
+    --success-color: #000;
+
+    --danger-bg: #ff0000;
+    --danger-color: #fff;
+
+}

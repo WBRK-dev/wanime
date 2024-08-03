@@ -1,0 +1,13 @@
+@import url('https://cdn-uicons.flaticon.com/2.1.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
+@import url('https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css');
+
+.fi {
+    display: grid;
+    aspect-ratio: 1;
+}
+
+.fi.fi-8 {font-size: 8px;}
+.fi.fi-12 {font-size: 12px;}
+.fi.fi-16 {font-size: 16px;}
+.fi.fi-24 {font-size: 24px;}
+.fi.fi-32 {font-size: 32px;}

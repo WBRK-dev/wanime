@@ -14,7 +14,7 @@ class Star extends Model
     protected $table = 'stars';
 
     public function user(): BelongsTo {
-        return $this->belongsTo(User::class, "userId", "id");
+        return $this->belongsTo(User::class, "userId", "id")->select("id", "name");
     }
 
     public function anime(): HasOne {

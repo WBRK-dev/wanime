@@ -2,17 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AnimeController;
 
 require __DIR__.'/auth.php';
 
-Route::inertia('/', 'Home/Index')->name('home');
+// API Routes
+Route::prefix("api")->group(function() { include_once __DIR__ . "/web-api.php"; });
+
+// Web Routes
+Route::get("/", [HomeController::class, "show"]);
+
+Route::get("/anime", [AnimeController::class, "show"]);
+
+Route::get("/watch", [AnimeController::class, "watch"]);
+
+Route::inertia("/login", "Login/Index");
