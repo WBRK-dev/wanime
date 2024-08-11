@@ -26,7 +26,7 @@
     
     <div class="wrapper">
 
-        {#if watchlist}
+        {#if watchlist && watchlist.length}
             <AnimeGrid title={"Watching"} animes={watchlist.map(anime => { return {id: anime.animeId, anime: anime.anime, currentEpisode: anime.episode + 1}; })} isWatchCard={true} />
         {/if}
 
