@@ -32,7 +32,7 @@
             {:else}
                 <input name="password" bind:value={$form.password} type="password" placeholder="Password" required>
             {/if}
-            <button class="input-button" on:click={() => showPassword = !showPassword}><i class="fi fi-sr-eye{showPassword ? "-crossed" : ""}"></i></button>
+            <button class="input-button" type="button" on:click={() => showPassword = !showPassword}><i class="fi fi-sr-eye{showPassword ? "-crossed" : ""}"></i></button>
         </div>
 
         {#if $form.errors.password}
