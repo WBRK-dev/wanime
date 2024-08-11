@@ -9,7 +9,7 @@
 
 
         {#if $page.props.auth.user}
-            <a href="/logout" use:inertia class="user-btn">Logout</a>
+            <form action="/logout" method="post"><input type="hidden" name="_token" value="{$page.props.csrf_token}"><button>logout</button></form>
         {:else}
             <a href="/login" use:inertia class="user-btn">Login</a>
             <!-- <a href="/register" use:inertia class="user-btn">Register</a> -->

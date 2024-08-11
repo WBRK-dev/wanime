@@ -11,7 +11,7 @@ require __DIR__.'/auth.php';
 Route::prefix("api")->group(function() { include_once __DIR__ . "/web-api.php"; });
 
 // Web Routes
-Route::get("/", [HomeController::class, "show"]);
+Route::get("/", [HomeController::class, "show"])->name("home");
 
 Route::get("/anime", [AnimeController::class, "show"]);
 
