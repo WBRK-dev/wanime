@@ -4,6 +4,14 @@ body {
 
     --app-navbar-bg: var(--body-secondary-bg);
     --app-anime-info-tabs-bg: var(--body-tertiary-bg);
+
+    --app-episode-button-bg: #242529;
+    --app-episode-button-bg-hover: #2f3136;
+    --app-episode-button-bg-active: #35373d;
+    --app-episode-button-bg-watched: #002703;
+    --app-episode-button-bg-watched-hover: #003004;
+    --app-episode-button-bg-watched-active: #004706;
+    --app-episode-button-bg-color: #fff;
     
     --body-bg: #220000;
     --body-bg-rgb: 34, 0, 0;

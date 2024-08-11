@@ -10,7 +10,7 @@
 <main>
     <Navbar/>
 
-    <div class="content" style="--padding: {paddingSize ? paddingSize : (padding ? "2rem": "0")};" data-dyn-padding={padding}>
+    <div class="content" style="--layout-padding: {paddingSize ? paddingSize : (padding ? "2rem": "0")};" data-dyn-padding={padding}>
         <slot/>
     </div>
 
@@ -29,12 +29,12 @@
 
     .content {
         flex-grow: 1;
-        padding: var(--padding);
+        padding: var(--layout-padding);
     }
 
     @media only screen and (max-width: 600px) {
         .content[data-dyn-padding="true"] {
-            padding: calc(var(--padding) / 2);
+            padding: calc(var(--layout-padding) / 2);
         }
     }
 

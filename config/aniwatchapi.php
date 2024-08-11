@@ -3,6 +3,7 @@
 return [
 
     "url" => env("ANIWATCH_API_URL"),
+    "frontend_url" => env("FRONTEND_ANIWATCH_API_URL"),
     
     "routes" => [
         "home" => "/anime/home",

@@ -54,7 +54,7 @@
                     {/each}
                 </div>
             {:else}
-                <p style="color: var(--body-secondary-bg);">No reviews available!</p>
+                <p style="color: var(--body-secondary-color);">No reviews available!</p>
             {/if}
         </div>
 

@@ -38,6 +38,7 @@ class AnimeController extends Controller
             "seasons" => $anime["seasons"],
             "relatedAnime" => $anime["relatedAnimes"],
             "recommendedAnime" => $anime["recommendedAnimes"],
+            "apiUrl" => config("aniwatchapi.frontend_url")
         ]);
 
     }
