@@ -9,6 +9,3 @@ p {font-size: 1rem;}
     background-image: linear-gradient(145deg, #ffde17 25%, #000000 25%, #000000 50%, #ffde17 50%, #ffde17 75%, #000000 75%, #000000 100%);
     background-size: 122.04px 85.45px;
 }
-.wip-bg p {
-    text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-}

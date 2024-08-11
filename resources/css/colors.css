@@ -12,6 +12,8 @@ body {
     --app-episode-button-bg-watched-hover: #003004;
     --app-episode-button-bg-watched-active: #004706;
     --app-episode-button-bg-color: #fff;
+
+    --app-transparent-hover-bg: #ffffff2d;
     
     --body-bg: #220000;
     --body-bg-rgb: 34, 0, 0;
