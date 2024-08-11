@@ -1,10 +1,14 @@
 <script>
 
-    import { page, inertia } from '@inertiajs/svelte';
+    import { page, inertia, router } from '@inertiajs/svelte';
 
     import clickOutside from "../../../Utils/ClickOutside.js";
 
     let showUserPopup = false;
+
+    const logout = () => {
+        router.post("/logout");
+    }
 
 </script>
 
@@ -36,7 +40,7 @@
                         {/if}
                     </div>
 
-                    <button class="logout-button"><p>Logout</p><i class="fi fi-sr-arrow-right"></i></button>
+                    <button class="logout-button" on:click={logout}><p>Logout</p><i class="fi fi-sr-arrow-right"></i></button>
 
                 </div>
 
