@@ -18,13 +18,13 @@
     <div class="right">
 
 
-        {#if $page.props.auth.user}
+        {#if $page.props.auth?.user}
 
-            <div class="user-dropdown-wrapper">
+            <div class="user-dropdown-wrapper" use:clickOutside on:click_outside={() => showUserPopup = false}>
 
-                <button class="user-button" on:click={() => showUserPopup = true}><p>{$page.props.auth.user.name}gq</p><i class="fi fi-sr-caret-down"></i></button>
+                <button class="user-button" on:click={() => showUserPopup = !showUserPopup}><p>{$page.props.auth.user.name}gq</p><i class="fi fi-sr-caret-down"></i></button>
 
-                <div class="user-dropdown" class:show={showUserPopup} use:clickOutside on:click_outside={() => showUserPopup = false}>
+                <div class="user-dropdown" class:show={showUserPopup}>
 
                     <div class="info">
                         <p class="big">{$page.props.auth.user.name}</p>
@@ -33,7 +33,7 @@
 
                     <div class="button-list">
                         <button class="list-item wip-bg" style="color: transparent;"><i class="fi fi-sr-user"></i><p>Account</p></button>
-                        <a href="/login" use:inertia class="list-item"><i class="fi fi-sr-rectangle-list"></i><p>Watchlist</p></a>
+                        <a href="/user/{$page.props.auth.user.id}/watchlist" use:inertia class="list-item"><i class="fi fi-sr-rectangle-list"></i><p>Watchlist</p></a>
                         <button class="list-item wip-bg" style="color: transparent;"><i class="fi fi-sr-settings"></i><p>Settings</p></button>
                         {#if $page.props.auth}
                             <button class="list-item wip-bg" style="color: transparent;"><i class="fi fi-sr-settings"></i><p>Settings</p></button>
