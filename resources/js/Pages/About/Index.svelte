@@ -5,7 +5,7 @@
     import Button from "../../Modules/Button.svelte";
     import WatchlistButton from "../../Modules/WatchlistButton.svelte";
 
-    import { page } from '@inertiajs/svelte'
+    import { inertia, page } from '@inertiajs/svelte'
 
     export let anime = {};
     export let watchlistStatus;
@@ -35,6 +35,14 @@
             {/if}
         </div>
 
+        <div class="center" style="flex-direction: row; margin-top: .5rem;">
+
+            {#each seasons as season}
+                <a href="/anime?id={season.id}" class="season" class:active={season.isCurrent} use:inertia><img src="{season.poster}"><p>{season.title}</p></a>
+            {/each}
+
+        </div>
+
     </div>
 
 </main></Layout>
@@ -54,6 +62,50 @@
     .poster {
         width: 14rem;
         border-radius: .25rem;
+    }
+
+    a.season {
+        display: grid;
+        place-items: center;
+
+        width: 10rem;
+        min-height: 4rem;
+        padding: .5rem;
+        box-sizing: border-box;
+
+        border-radius: .5rem;
+
+        text-decoration: none;
+
+        overflow: hidden;
+        position: relative;
+        isolation: isolate;
+    }
+    a.season::after {
+        content: "";
+
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: -1;
+
+        backdrop-filter: blur(.25rem);
+        background-color: #00000054;
+    }
+    a.season.active {
+        border: 3px solid var(--body-tertiary-bg);
+    }
+    a.season img {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: -2;
+
+        object-fit: cover;
+    }
+    a.season p {
+        color: var(--body-color);
+        text-align: center;
     }
 
 </style>

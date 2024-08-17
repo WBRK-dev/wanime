@@ -74,6 +74,7 @@
 
     .dropdown {
         position: absolute;
+        z-index: 1;
 
         width: 16rem;
         padding: .5rem 0;
@@ -85,7 +86,7 @@
         transition: opacity 200ms, transform 200ms;
     }
 
-    .dropdown.hide { opacity: 0; }
+    .dropdown.hide { opacity: 0; pointer-events: none; }
 
     .wrapper[data-dropdown-pos="bottom-right"] .dropdown {
         top: calc(100% + .5rem); right: 0;
