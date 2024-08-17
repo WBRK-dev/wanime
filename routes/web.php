@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AnimeController;
+use App\Http\Controllers\UserController;
 
 require __DIR__.'/auth.php';
 
@@ -18,3 +19,5 @@ Route::get("/anime", [AnimeController::class, "show"]);
 Route::get("/watch", [AnimeController::class, "watch"]);
 
 Route::inertia("/login", "Login/Index");
+
+Route::get("/user/{user}/watchlist", [UserController::class, "showWatchlist"]);

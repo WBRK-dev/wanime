@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anime;
 use App\Models\Watchlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -70,6 +71,12 @@ class AnimeController extends Controller
                 "episode" => 0
             ]);
         }
+
+        Anime::updateOrCreate(["animeId" => $animeId], [
+            "animeId" => $animeId,
+            "title" => $request->input("anime.title"),
+            "image" => $request->input("anime.image"),
+        ]);
 
         return "success";
     }

@@ -13,8 +13,6 @@
     export let relatedAnime = [];
     export let recommendAnime = [];
 
-    console.log(watchlistStatus);
-
 </script>
 
 <Layout><main>

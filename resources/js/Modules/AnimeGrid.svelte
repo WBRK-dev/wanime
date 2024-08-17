@@ -5,10 +5,11 @@
     export let title = '';
     export let animes = [];
     export let isWatchCard = false;
+    export let oneRow = true;
 
 </script>
 
-<div class="wrapper">
+<div class="wrapper" class:onerow={oneRow}>
 
     <h3>{title}</h3>
 
@@ -32,14 +33,15 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
         column-gap: .5rem;
-
+    }
+    .wrapper.onerow .grid {
         grid-template-rows: 1fr;
         grid-auto-rows: 0;
         overflow: hidden;
     }
 
     @media only screen and (max-width: 1000px) {
-        .grid {
+        .wrapper.onerow .grid {
             grid-template-rows: 1fr;
             grid-auto-rows: 0;
         }

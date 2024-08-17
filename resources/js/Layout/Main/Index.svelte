@@ -32,7 +32,7 @@
         padding: var(--layout-padding);
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 37.5rem) {
         .content[data-dyn-padding="true"] {
             padding: calc(var(--layout-padding) / 2);
         }

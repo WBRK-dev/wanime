@@ -7,11 +7,11 @@
 
 </script>
 
-<a use:inertia href="/{(isWatchCard ? "watch" : "anime")}?id={anime.id}" class="wrapper">
+<a use:inertia href="/{(isWatchCard ? "watch" : "anime")}?id={anime.animeId || anime.id}" class="wrapper">
 
     <div class="img-wrapper">
 
-        <img src="{anime?.poster || anime?.anime?.image}" alt="">
+        <img src="{anime?.poster || anime?.image || anime?.anime?.image}" alt="">
 
         {#if anime.episodes || anime.currentEpisode}
             <div class="episodes">
@@ -41,7 +41,7 @@
 
     <div class="info-wrapper">
 
-        <p>{anime?.name || anime?.anime.title}</p>
+        <p>{anime?.name || anime?.anime?.title || anime?.title}</p>
 
     </div>
 

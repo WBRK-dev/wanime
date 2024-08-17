@@ -22,7 +22,7 @@
 
             <div class="user-dropdown-wrapper" use:clickOutside on:click_outside={() => showUserPopup = false}>
 
-                <button class="user-button" on:click={() => showUserPopup = !showUserPopup}><p>{$page.props.auth.user.name}gq</p><i class="fi fi-sr-caret-down"></i></button>
+                <button class="user-button" on:click={() => showUserPopup = !showUserPopup}><p>{$page.props.auth.user.name}</p><i class="fi fi-sr-caret-down"></i></button>
 
                 <div class="user-dropdown" class:show={showUserPopup}>
 

@@ -32,7 +32,11 @@
             },
             body: JSON.stringify({
                 _token: $page.props.csrf_token,
-                status: selectedStatus || "remove"
+                status: selectedStatus || "remove",
+                anime: {
+                    title: anime.title,
+                    image: anime.poster
+                }
             })
         }).then(res => {
             if (!res.ok) {
