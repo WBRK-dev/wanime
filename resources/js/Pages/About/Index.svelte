@@ -4,6 +4,8 @@
     import AnimeInfoTabs from "../../Modules/AnimeInfoTabs.svelte";
     import Button from "../../Modules/Button.svelte";
     import WatchlistButton from "../../Modules/WatchlistButton.svelte";
+    import MoreInfo from "./MoreInfo.svelte";
+    import AnimeGrid from "../../Modules/AnimeGrid.svelte";
 
     import { inertia, page } from '@inertiajs/svelte'
 
@@ -11,7 +13,7 @@
     export let watchlistStatus;
     export let seasons = [];
     export let relatedAnime = [];
-    export let recommendAnime = [];
+    export let recommendedAnime = [];
 
 </script>
 
@@ -35,15 +37,22 @@
             {/if}
         </div>
 
-        <div class="center" style="flex-direction: row; margin-top: .5rem;">
+        <div class="center" style="flex-direction: row; margin-top: .5rem; align-items: stretch; flex-wrap: wrap; justify-content: center;">
 
             {#each seasons as season}
-                <a href="/anime?id={season.id}" class="season" class:active={season.isCurrent} use:inertia><img src="{season.poster}"><p>{season.title}</p></a>
+                <a href="/anime?id={season.id}" class="season" class:active={season.isCurrent} use:inertia><img src="{season.poster}" alt=""><p>{season.title}</p></a>
             {/each}
 
         </div>
 
     </div>
+
+    <div class="more-info-wrapper">
+        <MoreInfo characters={anime.info.charactersVoiceActors} promotionalMaterial={anime.info.promotionalVideos} extraInfo={anime.moreInfo} />
+    </div>
+
+    <div style="margin-top: 1rem;"><AnimeGrid title={"Related"} animes={relatedAnime} /></div>
+    <div><AnimeGrid title={"Recommended"} animes={recommendedAnime} /></div>
 
 </main></Layout>
 
@@ -90,7 +99,7 @@
         z-index: -1;
 
         backdrop-filter: blur(.25rem);
-        background-color: #00000054;
+        background-color: #00000080;
     }
     a.season.active {
         border: 3px solid var(--body-tertiary-bg);
@@ -106,6 +115,10 @@
     a.season p {
         color: var(--body-color);
         text-align: center;
+    }
+
+    .more-info-wrapper {
+        margin-top: 1rem;
     }
 
 </style>
