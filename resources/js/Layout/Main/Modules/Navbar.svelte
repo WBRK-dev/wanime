@@ -114,6 +114,7 @@
 
         transform: scale(0.9);
         opacity: 0;
+        pointer-events: none;
 
         background-color: var(--body-secondary-bg);
         border: 2px solid var(--body-tertiary-bg);
@@ -127,6 +128,7 @@
     .user-dropdown-wrapper .user-dropdown.show {
         transform: scale(1);
         opacity: 1;
+        pointer-events: all;
     }
 
     .user-dropdown-wrapper .user-dropdown .info {
