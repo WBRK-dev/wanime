@@ -6,7 +6,7 @@
 
 </script>
 
-<Layout>
+<Layout enablePosRelative={true}>
 
     <div class="wrapper">
 
@@ -21,9 +21,9 @@
 <style>
 
     .wrapper {
-        position: relative;
+        /* position: relative; */
         /* height: calc(100vh - 4rem); */
-        height: 100%;
+        /* height: 100%; */
     }
 
     .code {

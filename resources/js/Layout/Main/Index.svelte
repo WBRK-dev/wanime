@@ -5,9 +5,11 @@
     export let padding = true;
     export let paddingSize;
 
+    export let enablePosRelative = false;
+
 </script>
 
-<main>
+<main class:relative={enablePosRelative}>
     <Navbar/>
 
     <div class="content" style="--layout-padding: {paddingSize ? paddingSize : (padding ? "2rem": "0")};" data-dyn-padding={padding}>
@@ -36,6 +38,10 @@
         .content[data-dyn-padding="true"] {
             padding: calc(var(--layout-padding) / 2);
         }
+    }
+
+    main.relative .content {
+        position: relative;
     }
 
 </style>
