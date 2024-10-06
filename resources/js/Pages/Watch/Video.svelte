@@ -182,7 +182,7 @@
 
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div class="video-wrapper" class:mouse={activeMouse || showSettingsPopup} class:playing={videoPaused === false} class:muted={videoMuted} class:loading={!src} on:pointermove={pointerMove} on:click={attemptPauseOnVideoClick} bind:this={videoWrapperElem}>
+    <div class="video-wrapper" class:mouse={activeMouse || showSettingsPopup} class:playing={videoPaused === false} class:muted={videoMuted} class:loading={!src} on:mousemove={pointerMove} on:click={(e) => setTimeout(() => attemptPauseOnVideoClick(e), 100)} bind:this={videoWrapperElem}>
 
         <video class:fill-screen={videoFillScreen} bind:this={videoElem} bind:paused={videoPaused} bind:muted={videoMuted} bind:currentTime={videoCurrentTime} bind:duration={videoTotalTime} on:timeupdate={() => { videoSubtitleUpdate(); checkForSkipTimes(); }}>
             <track kind="captions">
@@ -381,7 +381,9 @@
     .video-wrapper .controls-overlay .bottom .buttons {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
 
+        width: 100%;
         padding: .5rem;
     }
 
@@ -529,11 +531,11 @@
         border-radius: .5rem;
         border: 2px solid var(--body-tertiary-bg);
 
-        opacity: 0;
+        opacity: 0; pointer-events: none;
         transition: opacity 250ms;
         overflow: auto;
     }
-    .video-wrapper .settings-overlay.show {opacity: 1;}
+    .video-wrapper .settings-overlay.show {opacity: 1; pointer-events: all;}
 
     .video-wrapper .settings-overlay .page {display: none;}
     .video-wrapper .settings-overlay .page.show {
