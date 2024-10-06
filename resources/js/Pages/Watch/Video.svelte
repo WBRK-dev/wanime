@@ -3,6 +3,7 @@
     import hlsJs from "https://cdn.jsdelivr.net/npm/hls.js@1.5.13/+esm";
     import VttJs from 'https://cdn.jsdelivr.net/npm/videojs-vtt.js@0.15.5/+esm';
     import clickOutside from "../../Utils/ClickOutside";
+    import { onDestroy } from "svelte";
 
     export let src;
     export let tracks = [];
@@ -170,6 +171,10 @@
             }
         });
     }
+
+    onDestroy(() => {
+        hlsStream?.destroy();
+    });
 
 </script>
 
