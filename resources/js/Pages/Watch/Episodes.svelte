@@ -25,13 +25,23 @@
 
 <div class="wrapper" class:list={episodes.length <= 24} bind:this={wrapperElem}>
 
-    {#each episodes as episode, i}
-        
-        <button on:click={() => dispatch("click", i)} class:active={i === current} bind:this={buttons[i]}>
-            {episode.number}
-        </button>
+    {#if episodes.length <= 24}
+        {#each episodes as episode, i}
+                
+            <button on:click={() => dispatch("click", i)} class:active={i === current} bind:this={buttons[i]}>
+                <span>{episode.number}:</span> {episode.title}
+            </button>
 
-    {/each}
+        {/each}
+    {:else}
+        {#each episodes as episode, i}
+            
+            <button on:click={() => dispatch("click", i)} class:active={i === current} bind:this={buttons[i]}>
+                {episode.number}
+            </button>
+
+        {/each}
+    {/if}
 
 </div>
 
@@ -64,5 +74,31 @@
     }
     .wrapper:not(.list) button:hover {background-color: var(--app-episode-button-bg-hover);}
     .wrapper:not(.list) button.active {background-color: var(--app-episode-button-bg-active);}
+
+    .wrapper.list {
+        display: flex;
+        flex-direction: column;
+
+        padding: .5rem 0;
+    }
+
+    .wrapper.list button {
+        padding: .5rem 1rem;
+
+        border: none;
+        border-radius: 0;
+        background-color: var(--body-secondary-bg);
+        
+        color: var(--body-color);
+        text-align: start;
+
+        cursor: pointer;
+    }
+    .wrapper.list button:hover {background-color: rgba(var(--body-tertiary-bg-rgb), .3);}
+    .wrapper.list button.active {background-color: var(--body-tertiary-bg);}
+
+    .wrapper.list button span {
+        font-weight: bold;
+    }
 
 </style>

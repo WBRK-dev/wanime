@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-
+    import { page } from "@inertiajs/svelte";
 
     import Layout from "../../Layout/Main/Index.svelte";
     import Episodes from "./Episodes.svelte";
@@ -19,13 +19,15 @@
     let currentEpisode = 0;
     let episodeServers = {sub: [], dub: [], raw: []};
     let currentEpisodeVideoSource;
+    let currentEpisodeSubtitles = [];
+    let currentEpisodeSkipTimes = [];
 
     let selectedCategory;
     let selectedServer;
 
     onMount(() => {
 
-        selectedCategory = localStorage.getItem("wanime-video-category");
+        selectedCategory = localStorage.getItem("wanime-video-category") || "sub";
         selectedServer = localStorage.getItem("wanime-video-server");
 
         loadEpisode(selectedEpisodeIndex);
@@ -37,6 +39,8 @@
         currentEpisode = e;
         currentEpisodeVideoSource = undefined;
         episodeServers.sub = []; episodeServers.dub = [];
+        currentEpisodeSubtitles = [];
+        currentEpisodeSkipTimes = [];
 
         const response = await fetch(`${apiUrl}/anime/servers?episodeId=${episodes[currentEpisode].episodeId}`);
         const json = await response.json();
@@ -49,6 +53,18 @@
         if (episodeServers[selectedCategory]?.filter(obj => obj.serverName === selectedServer).length > 0) loadServer(selectedServer, selectedCategory);
         else if (episodeServers[selectedCategory].length > 0) loadServer(episodeServers[selectedCategory][0].serverName, selectedCategory);
         else if (episodeServers["sub"].length > 0) loadServer(episodeServers["sub"][0].serverName, "sub");
+
+        fetch(`${$page.props.app_url}/api/watchlist/${anime.info.id}/episode`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                _method: "PUT",
+                _token: $page.props.csrf_token,
+                episode: e
+            }),
+        });
 
     }
 
@@ -64,6 +80,22 @@
         if (json.error) throw new Error("Loading episode failed");
 
         currentEpisodeVideoSource = json.sources.find(obj => obj.type === "hls")?.url;
+        currentEpisodeSubtitles = json.tracks.filter(obj => obj.kind === "captions");
+
+        if (json.intro) {
+            currentEpisodeSkipTimes.push({
+                start: json.intro.start,
+                end: json.intro.end,
+                type: "intro"
+            });
+        }
+        if (json.outro) {
+            currentEpisodeSkipTimes.push({
+                start: json.outro.start,
+                end: json.outro.end,
+                type: "outro"
+            });
+        }
 
     }
 
@@ -76,7 +108,7 @@
         <div id="episodes"><Episodes episodes={episodes} current={currentEpisode} on:click={(e) => loadEpisode(e.detail)} /></div>
 
         <div id="video">
-            <Video src={currentEpisodeVideoSource} />
+            <Video src={currentEpisodeVideoSource} tracks={currentEpisodeSubtitles} skipTimes={currentEpisodeSkipTimes} />
             <Servers on:click={(e) => loadServer(e.detail.server, e.detail.category)} sub={episodeServers.sub} dub={episodeServers.dub} raw={episodeServers.raw} selectedCategory={selectedCategory} selectedServer={selectedServer} />
         </div>
 

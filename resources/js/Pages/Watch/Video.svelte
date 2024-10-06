@@ -1,10 +1,17 @@
 <script>
 
     import hlsJs from "https://cdn.jsdelivr.net/npm/hls.js@1.5.13/+esm";
+    import VttJs from 'https://cdn.jsdelivr.net/npm/videojs-vtt.js@0.15.5/+esm';
+    import clickOutside from "../../Utils/ClickOutside";
 
     export let src;
+    export let tracks = [];
+    export let skipTimes = [];
 
     $: src, loadSource();
+    $: tracks, onTrackArrayChange();
+
+    const parser = new VttJs.WebVTT.Parser(window, VttJs.WebVTT.StringDecoder());
 
     let hlsStream;
     let videoWrapperElem;
@@ -15,10 +22,36 @@
     let videoTotalTime;
     let videoBufferedTime = 0;
 
+    let subtitleCues = [];
+    parser.oncue = function(cue) { subtitleCues.push(cue); };
+    let subtitleTextBlocks = [];
+    let selectedSubtitleFile;
+    let selectedSubtitleLabel = localStorage.getItem("wanime-video-subtitle-label") || "";
+    let subtitleScale = localStorage.getItem("wanime-video-subtitle-scale") || 100;
+    let subtitleFontSize = localStorage.getItem("wanime-video-subtitle-font-size") || 16;
+    let subtitleBottomOffset = localStorage.getItem("wanime-video-subtitle-bottom-offset") || 16;
+    let subtitleMaxWidth = localStorage.getItem("wanime-video-subtitle-max-width") || 60;
+    let skipTimesEnabled = (localStorage.getItem("wanime-video-skip-times-enabled") === "true" || 
+        localStorage.getItem("wanime-video-skip-times-enabled") === null) ? true : false;
+
+    $: selectedSubtitleLabel, localStorage.setItem("wanime-video-subtitle-label", selectedSubtitleLabel);
+    $: subtitleScale, localStorage.setItem("wanime-video-subtitle-scale", subtitleScale);
+    $: subtitleFontSize, localStorage.setItem("wanime-video-subtitle-font-size", subtitleFontSize);
+    $: subtitleBottomOffset, localStorage.setItem("wanime-video-subtitle-bottom-offset", subtitleBottomOffset);
+    $: subtitleMaxWidth, localStorage.setItem("wanime-video-subtitle-max-width", subtitleMaxWidth);
+    $: skipTimesEnabled, localStorage.setItem("wanime-video-skip-times-enabled", skipTimesEnabled);
+
     let activeMouseTimeout;
     let activeMouse = false;
 
     let loading = true;
+
+    let showSettingsPopup = false;
+    let settingsPage = "";
+
+    let videoFillScreen = (localStorage.getItem("wanime-video-fill-screen") || "false") === "true" ? true : false;
+
+    $: videoFillScreen, localStorage.setItem("wanime-video-fill-screen", String(videoFillScreen));
 
     const loadSource = () => {
         if (!src) {
@@ -29,6 +62,8 @@
             return;
         }
         hlsStream?.destroy();
+        selectedSubtitleFile = undefined;
+        subtitleCues = [];
 
         hlsStream = new hlsJs();
         hlsStream.loadSource(src);
@@ -97,19 +132,60 @@
         else if (!forward) videoElem.currentTime -= 30;
     }
 
+    const loadTrackIntoCues = async (track) => {
+        if (!track) return;
+        selectedSubtitleFile = track.file;
+        subtitleCues = [];
+        parser.parse(await (await fetch(track.file)).text());
+        parser.flush();
+    }
+
+    const videoSubtitleUpdate = () => {
+        subtitleTextBlocks = subtitleCues.filter(cue => cue.startTime <= videoElem.currentTime && cue.endTime >= videoElem.currentTime).map(cue => cue.text);
+    }
+
+    const onTrackArrayChange = () => {
+        if (!selectedSubtitleLabel) return;
+        const favTrack = tracks.find(track => track.label === selectedSubtitleLabel);
+        if (favTrack) loadTrackIntoCues(favTrack);
+        else loadTrackIntoCues(tracks.find(track => track.default));
+    }
+
+    const attemptPauseOnVideoClick = (e) => {
+        if (!activeMouse) return;
+        let elem = e.target;
+        let searching = true;
+        while (searching) {
+            if (elem.dataset.blockPauseClick !== undefined) return;
+            if (elem === videoWrapperElem) {searching = false; togglePlayState(); }
+            elem = elem.parentElement;
+        }
+    }
+
+    const checkForSkipTimes = () => {
+        if (!skipTimesEnabled) return;
+        skipTimes.forEach(skipTime => {
+            if (videoCurrentTime >= skipTime.start && videoCurrentTime < skipTime.end) {
+                videoCurrentTime = skipTime.end;
+            }
+        });
+    }
+
 </script>
 
 <div>
 
-    <div class="video-wrapper" class:mouse={activeMouse} class:playing={videoPaused === false} class:muted={videoMuted} class:loading={!src} on:pointermove={pointerMove} bind:this={videoWrapperElem}>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div class="video-wrapper" class:mouse={activeMouse || showSettingsPopup} class:playing={videoPaused === false} class:muted={videoMuted} class:loading={!src} on:pointermove={pointerMove} on:click={attemptPauseOnVideoClick} bind:this={videoWrapperElem}>
 
-        <video bind:this={videoElem} bind:paused={videoPaused} bind:muted={videoMuted} bind:currentTime={videoCurrentTime} bind:duration={videoTotalTime}>
+        <video class:fill-screen={videoFillScreen} bind:this={videoElem} bind:paused={videoPaused} bind:muted={videoMuted} bind:currentTime={videoCurrentTime} bind:duration={videoTotalTime} on:timeupdate={() => { videoSubtitleUpdate(); checkForSkipTimes(); }}>
             <track kind="captions">
         </video>
 
         <div class="status-overlay">
 
-            <div class="overlay-center overlay-hide-when-loading" class:show={videoCurrentTime >= videoBufferedTime}>
+            <div class="overlay-center overlay-hide-when-loading" class:show={videoCurrentTime >= videoBufferedTime && videoCurrentTime !== videoTotalTime}>
                 <div class="spinner"></div>
                 <p>Buffering</p>
             </div>
@@ -121,14 +197,21 @@
 
             <div class="bottom">
 
-                <div class="trackbar-wrapper"><div class="trackbar" style="--width: {Math.round( 100 / videoTotalTime * videoCurrentTime )}%;"><div class="trackbar-buffer" style="--width: {Math.round( 100 / videoTotalTime * videoBufferedTime )}%;"></div></div></div>
+                <div class="trackbar-wrapper" data-block-pause-click>
+                    <div class="trackbar" style="--width: {100 / videoTotalTime * videoCurrentTime}%;">
+                        <div class="trackbar-buffer" style="--width: {100 / videoTotalTime * videoBufferedTime}%;"></div>
+                        {#each skipTimes as skipTime}
+                            <div class="trackbar-segment" style="--start: {100 / videoTotalTime * skipTime.start}%; --end: {100 / videoTotalTime * (skipTime.end - skipTime.start)}%;"></div>
+                        {/each}
+                    </div>
+                </div>
 
                 <div class="buttons">
 
-                    <button on:click={togglePlayState}><i class="fi fi-sr-play" data-only-when-not="playing"></i><i class="fi fi-sr-pause" data-only-when="playing"></i></button>
-                    <button on:click={toggleMuteState}><i class="fi fi-sr-volume-mute" data-only-when="muted"></i><i class="fi fi-sr-volume" data-only-when-not="muted"></i></button>
+                    <button on:click={togglePlayState} data-block-pause-click><i class="fi fi-sr-play" data-only-when-not="playing"></i><i class="fi fi-sr-pause" data-only-when="playing"></i></button>
+                    <button on:click={toggleMuteState} data-block-pause-click><i class="fi fi-sr-volume-mute" data-only-when="muted"></i><i class="fi fi-sr-volume" data-only-when-not="muted"></i></button>
 
-                    <p class="time">
+                    <p class="time" data-block-pause-click>
                         {#if Math.floor((videoTotalTime || 0) / 3600)}
                             <span>{ String(Math.floor((videoCurrentTime || 0) / 3600)).padStart(2, "0") }:</span>
                         {/if}
@@ -142,17 +225,65 @@
                         <span>{ formatTimeNumber( Math.floor( videoTotalTime || 0 ) % 60 ) }</span>
                     </p>
 
-                    <div class="right">
+                    <div class="right" data-block-pause-click>
 
                         <button on:click={() => videoSkip(false)}><i class="fi fi-sr-angle-double-small-left"></i></button>
                         <button on:click={() => videoSkip(true)}><i class="fi fi-sr-angle-double-small-right"></i></button>
+                        <button on:click={() => setTimeout(() => showSettingsPopup = !showSettingsPopup, 20)}><i class="fi fi-sr-settings"></i></button>
                         <button on:click={toggleFullscreen}><i class="fi fi-sr-expand" data-only-when-not="fullscreen"></i><i class="fi fi-sr-compress" data-only-when="fullscreen"></i></button>
-
 
                     </div>
 
 
                 </div>
+
+            </div>
+
+        </div>
+
+        <div class="subtitles-overlay" style="--scale: {Number(subtitleScale) / 100}; --fontsize: {subtitleFontSize}px; --bottom-offset: {subtitleBottomOffset}px; --btn-visible-bottom-offset: {subtitleBottomOffset > 56 ? `${subtitleBottomOffset}px` : "3.5rem"}; --max-width: {subtitleMaxWidth}%;" data-block-pause-click>
+            {#each subtitleTextBlocks as block}
+                <p>{@html block}</p>
+            {/each}
+        </div>
+
+        <div class="settings-overlay" class:show={showSettingsPopup} use:clickOutside on:click_outside={() => {if (showSettingsPopup) setTimeout(() => showSettingsPopup = false, 40)}} data-block-pause-click>
+
+            <div class="page" class:show={!settingsPage} id="home">
+
+                <button class="item" on:click={() => settingsPage = "subtitles"}><p>Subtitles</p><i class="fi fi-sr-angle-small-right"></i></button>
+                <button class="item" on:click={() => settingsPage = "miscellaneous"}><p>Miscellaneous</p><i class="fi fi-sr-angle-small-right"></i></button>
+
+            </div>
+
+            <div class="page" class:show={settingsPage === "subtitles"} id="subtitles">
+
+                <button class="back-btn" on:click={() => settingsPage = ""}><i class="fi fi-sr-arrow-small-left"></i><p>Back</p></button>
+
+                <div class="section" id="tracks">
+                    <p class="label">Subtitles</p>
+                    <button class="item" on:click={() => {selectedSubtitleFile = undefined; selectedSubtitleLabel = ""; subtitleCues = [];}}><i class="fi fi-sr-check-circle" class:show={!selectedSubtitleFile}></i><p>Disabled</p></button>
+                    {#each tracks as track}
+                        <button class="item" on:click={() => { selectedSubtitleLabel = track.label; loadTrackIntoCues(track); }}><i class="fi fi-sr-check-circle" class:show={selectedSubtitleFile === track.file}></i><p>{track.label}</p></button>
+                    {/each}
+                </div>
+
+                <div class="section" id="more">
+                    <p class="label">More</p>
+                    <div class="item"><p>Scale</p><div class="right"><input type="text" bind:value={subtitleScale}><p>%</p></div></div>
+                    <div class="item"><p>Font Size</p><div class="right"><input type="text" bind:value={subtitleFontSize}><p>px</p></div></div>
+                    <div class="item"><p>Bottom Offset</p><div class="right"><input type="text" bind:value={subtitleBottomOffset}><p>px</p></div></div>
+                    <div class="item"><p>Max Width</p><div class="right"><input type="text" bind:value={subtitleMaxWidth}><p>%</p></div></div>
+                </div>
+
+            </div>
+
+            <div class="page" class:show={settingsPage === "miscellaneous"} id="miscellaneous">
+
+                <button class="back-btn" on:click={() => settingsPage = ""}><i class="fi fi-sr-arrow-small-left"></i><p>Back</p></button>
+
+                <button on:click={() => videoFillScreen = !videoFillScreen} class="item"><p>Fill Screen</p><p>{videoFillScreen ? "On" : "Off"}</p></button>
+                <button on:click={() => skipTimesEnabled = !skipTimesEnabled} class="item"><p>Enable SkipTimes</p><p>{skipTimesEnabled ? "On" : "Off"}</p></button>
 
             </div>
 
@@ -170,6 +301,7 @@
         overflow: hidden;
 
         position: relative;
+        isolation: isolate;
     }
     .video-wrapper:not(.mouse) { cursor: none; }
     .video-wrapper:fullscreen { border-radius: 0; }
@@ -181,6 +313,13 @@
 
         aspect-ratio: 16/9;
         background-color: #000;
+    }
+    .video-wrapper:fullscreen video {
+        aspect-ratio: unset;
+        height: 100%;
+    }
+    .video-wrapper:fullscreen video.fill-screen {
+        object-fit: cover;
     }
 
     .video-wrapper .status-overlay {
@@ -292,6 +431,7 @@
 
         cursor: pointer;
         overflow: hidden;
+        isolation: isolate;
     }
 
     .video-wrapper .controls-overlay .bottom .trackbar-wrapper .trackbar::after {
@@ -324,6 +464,190 @@
         background-color: #888888;
     }
     .video-wrapper.loading .controls-overlay .bottom .trackbar-wrapper .trackbar .trackbar-buffer {opacity: 0;}
+
+    .video-wrapper .controls-overlay .bottom .trackbar-wrapper .trackbar .trackbar-segment {
+        position: absolute;
+        top: 0; left: var(--start, 0%);
+        z-index: 3;
+        
+        width: var(--end, 0%);
+        height: 100%;
+
+        background-color: #c4da00;
+    }
+    .video-wrapper.loading .controls-overlay .bottom .trackbar-wrapper .trackbar .trackbar-segment {opacity: 0;}
+
+
+    .video-wrapper .subtitles-overlay {
+        display: flex; gap: .25rem;
+        flex-direction: column;
+        justify-content: end;
+        align-items: center;
+
+        position: absolute;
+        bottom: var(--bottom-offset, 1rem); left: 0;
+        width: 100%; height: 100%;
+
+        pointer-events: none;
+
+        transition: bottom 500ms;
+    }
+    .video-wrapper.mouse .subtitles-overlay,
+    .video-wrapper.loading .subtitles-overlay,
+    .video-wrapper:not(.playing) .subtitles-overlay {
+        bottom: var(--btn-visible-bottom-offset, 3.5rem);
+    }
+
+    .video-wrapper .subtitles-overlay p {
+        display: block;
+
+        max-width: var(--max-width, 60%);
+        padding: .25rem .5rem;
+        transform: scale(var(--scale, 1));
+
+        background-color: #0000009f;
+        border-radius: .5rem;
+
+        color: #fff;
+        font-size: var(--fontsize, 16px);
+
+        pointer-events: all;
+    }
+
+
+    .video-wrapper .settings-overlay {
+        position: absolute;
+        bottom: 4rem; right: 1rem;
+        width: min(16rem, calc(100% - 2rem)); height: min(17rem, calc(100% - 5rem));
+
+        background-color: var(--body-secondary-bg);
+        border-radius: .5rem;
+        border: 2px solid var(--body-tertiary-bg);
+
+        opacity: 0;
+        transition: opacity 250ms;
+        overflow: auto;
+    }
+    .video-wrapper .settings-overlay.show {opacity: 1;}
+
+    .video-wrapper .settings-overlay .page {display: none;}
+    .video-wrapper .settings-overlay .page.show {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .video-wrapper .settings-overlay .page button.back-btn {
+        display: flex; gap: .5rem;
+        align-items: center;
+
+        padding: .5rem;
+
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid var(--body-tertiary-bg);
+
+        color: var(--body-color);
+
+        cursor: pointer;
+    }
+    .video-wrapper .settings-overlay .page button.back-btn:hover {
+        background-color: rgba(var(--body-tertiary-bg-rgb), .3);
+    }
+
+    .video-wrapper .settings-overlay .page .section {
+        padding: .5rem 0;
+        border-bottom: 1px solid var(--body-tertiary-bg);
+    }
+    .video-wrapper .settings-overlay .page .section p.label {
+        margin: 0 0 0 .5rem;
+        color: var(--body-tertiary-color);
+    }
+
+    .video-wrapper .settings-overlay .page#home button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        background-color: transparent;
+        border: none;
+
+        padding: .5rem 1rem;
+
+        color: var(--body-color);
+
+        cursor: pointer;
+    }
+    .video-wrapper .settings-overlay .page#home button:not(:last-of-type) {
+        border-bottom: 1px solid var(--body-tertiary-bg);
+    }
+
+    .video-wrapper .settings-overlay .page#subtitles #tracks button {
+        display: flex; gap: .5rem;
+        align-items: center;
+
+        background-color: transparent;
+        border: none;
+
+        padding: .25rem .5rem;
+        width: 100%;
+        box-sizing: border-box;
+
+        color: var(--body-color);
+        font-size: unset;
+        text-align: left;
+
+        cursor: pointer;
+    }
+    .video-wrapper .settings-overlay .page#subtitles #tracks button i {opacity: 0;}
+    .video-wrapper .settings-overlay .page#subtitles #tracks button i.show {opacity: 1;}
+
+    .video-wrapper .settings-overlay .page#subtitles #more .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: .25rem .5rem;
+    }
+    .video-wrapper .settings-overlay .page#subtitles #more .item input {
+        padding: .25rem .5rem;
+        width: 3rem;
+
+        background-color: transparent;
+        border: 1px solid var(--body-tertiary-bg);
+        border-radius: .5rem;
+
+        color: var(--body-color);
+        outline: 0px solid var(--body-tertiary-bg);
+
+        transition: outline 200ms;
+    }
+    .video-wrapper .settings-overlay .page#subtitles #more .item input:focus {
+        outline: 3px solid var(--body-tertiary-bg);
+    }
+
+    .video-wrapper .settings-overlay .page#subtitles #more .item .right {
+        display: flex; gap: .25rem;
+        align-items: center;
+    }
+
+
+    .video-wrapper .settings-overlay .page#miscellaneous button.item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: .5rem;
+
+        border: none;
+        border-radius: 0;
+        background-color: transparent;
+
+        color: var(--body-color);
+
+        cursor: pointer;
+    }
 
 
 

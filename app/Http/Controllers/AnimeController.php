@@ -30,23 +30,23 @@ class AnimeController extends Controller
         $anime = AniwatchApiController::innerExecute(config("aniwatchapi.routes.about"). "?id=" . $request->input("id"));
         $animeEpisodes = AniwatchApiController::innerExecute(config("aniwatchapi.routes.episodes"). "/" . $request->input("id"));
 
-        if (Auth::check()) $watchlistStatus = Watchlist::where("animeId", $request->input("id"))->where("userId", Auth()->user()->id)->first()?->status;
+        $watchlist = null;
+        if (Auth::check()) $watchlist = Watchlist::where("animeId", $request->input("id"))->where("userId", Auth()->user()->id)->first();
 
         return Inertia::render("Watch/Index", [
             "anime" => $anime["anime"],
             "episodes" => $animeEpisodes["episodes"] ?? null,
-            "watchlistStatus" => $watchlistStatus ?? null,
+            "watchlistStatus" => $watchlist?->status ?? null,
             "seasons" => $anime["seasons"],
             "relatedAnime" => $anime["relatedAnimes"],
             "recommendedAnime" => $anime["recommendedAnimes"],
-            "apiUrl" => config("aniwatchapi.frontend_url")
+            "apiUrl" => config("aniwatchapi.frontend_url"),
+            "selectedEpisodeIndex" => $watchlist?->episode ?? 0,
         ]);
 
     }
 
     function updateWatchlistStatus(Request $request, String $animeId) {
-        if (!Auth::check()) abort(401);
-
         $allowedStatus = ["watching", "planning", "completed", "paused", "dropped", "remove"];
         $status = $request->input("status");
         $user = Auth::user();
@@ -77,6 +77,18 @@ class AnimeController extends Controller
             "title" => $request->input("anime.title"),
             "image" => $request->input("anime.image"),
         ]);
+
+        return "success";
+    }
+
+    function updateWatchlistEpisode(Request $request, String $animeId) {
+        $user = Auth::user();
+        $watchlist = Watchlist::where("animeId", $animeId)->where("userId", $user->id)->first();
+
+        if (!$watchlist) abort(400);
+
+        $watchlist->episode = $request->input("episode");
+        $watchlist->save();
 
         return "success";
     }
