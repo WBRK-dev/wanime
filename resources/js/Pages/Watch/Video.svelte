@@ -3,7 +3,7 @@
     import hlsJs from "https://cdn.jsdelivr.net/npm/hls.js@1.5.13/+esm";
     import VttJs from 'https://cdn.jsdelivr.net/npm/videojs-vtt.js@0.15.5/+esm';
     import clickOutside from "../../Utils/ClickOutside";
-    import { onDestroy } from "svelte";
+    import { createEventDispatcher, onDestroy } from "svelte";
 
     export let src;
     export let tracks = [];
@@ -13,6 +13,7 @@
     $: tracks, onTrackArrayChange();
 
     const parser = new VttJs.WebVTT.Parser(window, VttJs.WebVTT.StringDecoder());
+    const dispatch = createEventDispatcher();
 
     let hlsStream;
     let videoWrapperElem;
@@ -184,7 +185,7 @@
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="video-wrapper" class:mouse={activeMouse || showSettingsPopup} class:playing={videoPaused === false} class:muted={videoMuted} class:loading={!src} on:mousemove={pointerMove} on:click={(e) => setTimeout(() => attemptPauseOnVideoClick(e), 100)} bind:this={videoWrapperElem}>
 
-        <video class:fill-screen={videoFillScreen} bind:this={videoElem} bind:paused={videoPaused} bind:muted={videoMuted} bind:currentTime={videoCurrentTime} bind:duration={videoTotalTime} on:timeupdate={() => { videoSubtitleUpdate(); checkForSkipTimes(); }}>
+        <video class:fill-screen={videoFillScreen} bind:this={videoElem} bind:paused={videoPaused} bind:muted={videoMuted} bind:currentTime={videoCurrentTime} bind:duration={videoTotalTime} on:timeupdate={() => { videoSubtitleUpdate(); checkForSkipTimes(); }} on:ended={() => dispatch("nextEp")}>
             <track kind="captions">
         </video>
 

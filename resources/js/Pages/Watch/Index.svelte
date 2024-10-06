@@ -99,6 +99,10 @@
 
     }
 
+    const attemptNextEp = () => {
+        if (currentEpisode + 1 < episodes.length - 1) loadEpisode(currentEpisode + 1);
+    }
+
 </script>
 
 <Layout paddingSize={"1rem"} padding={false}>
@@ -108,7 +112,7 @@
         <div id="episodes"><Episodes episodes={episodes} current={currentEpisode} on:click={(e) => loadEpisode(e.detail)} /></div>
 
         <div id="video">
-            <Video src={currentEpisodeVideoSource} tracks={currentEpisodeSubtitles} skipTimes={currentEpisodeSkipTimes} />
+            <Video src={currentEpisodeVideoSource} tracks={currentEpisodeSubtitles} skipTimes={currentEpisodeSkipTimes} on:nextEp={attemptNextEp}/>
             <Servers on:click={(e) => loadServer(e.detail.server, e.detail.category)} sub={episodeServers.sub} dub={episodeServers.dub} raw={episodeServers.raw} selectedCategory={selectedCategory} selectedServer={selectedServer} />
         </div>
 
