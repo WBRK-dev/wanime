@@ -13,7 +13,7 @@
 </script>
 
 <div class="navbar">
-    <a href="{$page.props.common.routes.home}" use:inertia class="logo">WAnime</a>
+    <a href={$page?.props?.common?.routes?.home || "#"} use:inertia class="logo">WAnime</a>
 
     <div class="right">
 
@@ -48,7 +48,7 @@
 
         {:else}
             
-            <a href={$page.props.common.routes.login} use:inertia class="user-button">Login</a>
+            <a href={$page.props.common?.routes.login || "#"} use:inertia class="user-button">Login</a>
             
         {/if}
 

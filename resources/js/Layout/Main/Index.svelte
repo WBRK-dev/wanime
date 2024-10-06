@@ -7,6 +7,8 @@
 
     export let enablePosRelative = false;
 
+    export let growChildElement = false;
+
 </script>
 
 <svelte:head>
@@ -16,7 +18,7 @@
 <main class:relative={enablePosRelative}>
     <Navbar/>
 
-    <div class="content" style="--layout-padding: {paddingSize ? paddingSize : (padding ? "2rem": "0")};" data-dyn-padding={padding}>
+    <div class="content" style="--layout-padding: {paddingSize ? paddingSize : (padding ? "2rem": "0")};" data-dyn-padding={padding} class:grow-child={growChildElement}>
         <slot/>
     </div>
 
@@ -36,6 +38,12 @@
     .content {
         flex-grow: 1;
         padding: var(--layout-padding);
+    }
+
+    .content.grow-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
     }
 
     @media only screen and (max-width: 37.5rem) {

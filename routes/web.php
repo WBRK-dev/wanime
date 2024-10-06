@@ -16,7 +16,7 @@ Route::get("/", [HomeController::class, "show"])->name("home");
 
 Route::get("/anime", [AnimeController::class, "show"])->name("anime.show");
 
-Route::get("/watch", [AnimeController::class, "watch"])->name("anime.watch");
+Route::get("/watch", [AnimeController::class, "watch"])->middleware("auth")->name("anime.watch");
 
 Route::inertia("/login", "Login/Index")->name("user.login");
 
