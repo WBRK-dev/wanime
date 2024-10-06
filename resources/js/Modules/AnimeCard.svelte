@@ -3,11 +3,11 @@
     import { inertia } from "@inertiajs/svelte";
 
     export let anime = {};
-    export let isWatchCard = false;
+    export let url;
 
 </script>
 
-<a use:inertia href="/{(isWatchCard ? "watch" : "anime")}?id={anime.animeId || anime.id}" class="wrapper">
+<a use:inertia href="{url}?id={anime.animeId || anime.id}" class="wrapper">
 
     <div class="img-wrapper">
 

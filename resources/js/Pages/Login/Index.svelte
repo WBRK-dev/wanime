@@ -2,7 +2,7 @@
 
     import Layout from "../../Layout/Main/Index.svelte";
 
-    import { useForm } from '@inertiajs/svelte'
+    import { page, useForm } from '@inertiajs/svelte';
   
     let form = useForm({
         email: null,
@@ -12,7 +12,7 @@
   
     const handleSubmit = async () => {
         $form.clearErrors();
-        $form.post('/login', {onSuccess: () => console.log("test1")});
+        $form.post($page.props.common.routes.login, {onSuccess: () => console.log("test1")});
     }
 </script>
 

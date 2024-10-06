@@ -14,6 +14,7 @@
     export let seasons = [];
     export let relatedAnime = [];
     export let recommendedAnime = [];
+    export let routes = {};
 
 </script>
 
@@ -51,8 +52,8 @@
         <MoreInfo characters={anime.info.charactersVoiceActors} promotionalMaterial={anime.info.promotionalVideos} extraInfo={anime.moreInfo} />
     </div>
 
-    <div style="margin-top: 1rem;"><AnimeGrid title={"Related"} animes={relatedAnime} /></div>
-    <div><AnimeGrid title={"Recommended"} animes={recommendedAnime} /></div>
+    <div style="margin-top: 1rem;"><AnimeGrid title={"Related"} animes={relatedAnime} url={routes["anime-show"]} /></div>
+    <div><AnimeGrid title={"Recommended"} animes={recommendedAnime} url={routes["anime-show"]} /></div>
 
 </main></Layout>
 

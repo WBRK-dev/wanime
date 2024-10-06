@@ -13,7 +13,7 @@
 </script>
 
 <div class="navbar">
-    <a href="/" use:inertia class="logo">WAnime</a>
+    <a href="{$page.props.common.routes.home}" use:inertia class="logo">WAnime</a>
 
     <div class="right">
 
@@ -33,7 +33,7 @@
 
                     <div class="button-list">
                         <button class="list-item wip-bg" style="color: transparent;"><i class="fi fi-sr-user"></i><p>Account</p></button>
-                        <a href="/user/{$page.props.auth.user.id}/watchlist" use:inertia class="list-item"><i class="fi fi-sr-rectangle-list"></i><p>Watchlist</p></a>
+                        <a href="{$page.props.common.routes["user-watchlist"]}" use:inertia class="list-item"><i class="fi fi-sr-rectangle-list"></i><p>Watchlist</p></a>
                         <button class="list-item wip-bg" style="color: transparent;"><i class="fi fi-sr-settings"></i><p>Settings</p></button>
                         {#if $page.props.auth}
                             <button class="list-item wip-bg" style="color: transparent;"><i class="fi fi-sr-settings"></i><p>Settings</p></button>
@@ -48,7 +48,7 @@
 
         {:else}
             
-            <a href="/login" use:inertia class="user-button">Login</a>
+            <a href={$page.props.common.routes.login} use:inertia class="user-button">Login</a>
             
         {/if}
 

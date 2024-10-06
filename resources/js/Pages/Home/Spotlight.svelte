@@ -4,6 +4,7 @@
     import { inertia } from "@inertiajs/svelte";
 
     export let animes = [];
+    export let routes;
 
     let spotlightTimeout;
     let activeSlide = 0;
@@ -71,8 +72,8 @@
                     {anime.description}
                 </p>
                 <div class="buttons">
-                    <a href="/watch?id={anime.id}" class="primary" use:inertia><i class="fi fi-sr-play-circle"></i>Watch Now</a>
-                    <a href="/anime?id={anime.id}" class="secondary" use:inertia><i class="fi fi-sr-info"></i>Details</a>
+                    <a href="{routes["anime-watch"]}?id={anime.id}" class="primary" use:inertia><i class="fi fi-sr-play-circle"></i>Watch Now</a>
+                    <a href="{routes["anime-show"]}?id={anime.id}" class="secondary" use:inertia><i class="fi fi-sr-info"></i>Details</a>
                 </div>
             </div>
 

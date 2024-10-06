@@ -14,10 +14,10 @@ Route::prefix("api")->group(function() { include_once __DIR__ . "/web-api.php"; 
 // Web Routes
 Route::get("/", [HomeController::class, "show"])->name("home");
 
-Route::get("/anime", [AnimeController::class, "show"]);
+Route::get("/anime", [AnimeController::class, "show"])->name("anime.show");
 
-Route::get("/watch", [AnimeController::class, "watch"]);
+Route::get("/watch", [AnimeController::class, "watch"])->name("anime.watch");
 
-Route::inertia("/login", "Login/Index");
+Route::inertia("/login", "Login/Index")->name("user.login");
 
-Route::get("/user/{user}/watchlist", [UserController::class, "showWatchlist"]);
+Route::get("/user/{user}/watchlist", [UserController::class, "showWatchlist"])->name("user.watchlist");

@@ -43,7 +43,18 @@ class HandleInertiaRequests extends Middleware
                 ? $request->user()->only('id', 'name', 'email')
                 : null,
 
-            'app_url' => config("app.url")
+            'app_url' => config("app.url"),
+
+            'common' => [
+                'routes' => [
+                    'home' => route('home'),
+                    'login' => route('user.login'),
+
+                    'user-watchlist' => fn () => $request->user()
+                        ? route('user.watchlist', ['user' => $request->user()->id])
+                        : null,
+                ]
+            ]
 
         ]);
     }

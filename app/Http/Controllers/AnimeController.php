@@ -22,6 +22,9 @@ class AnimeController extends Controller
             "seasons" => $anime["seasons"],
             "relatedAnime" => $anime["relatedAnimes"],
             "recommendedAnime" => $anime["recommendedAnimes"],
+            "routes" => [
+                "anime-show" => route("anime.show"),
+            ]
         ]);
     }
 

@@ -67,9 +67,9 @@
         <p><span>Duration:</span> {extraInfo.duration}</p>
         <p><span>Status:</span> {extraInfo.status}</p>
         <p><span>Malscore:</span> {extraInfo.malscore}</p>
-        <p><span>Genres:</span> {(typeof extraInfo.genres === "string" ? extraInfo.genres : extraInfo.genres.join(", "))}</p>
-        <p><span>Studios:</span> {(typeof extraInfo.studios === "string" ? extraInfo.studios : extraInfo.studios.join(", "))}</p>
-        <p><span>Producers:</span> {(typeof extraInfo.producers === "string" ? extraInfo.producers : extraInfo.producers.join(", "))}</p>
+        <p><span>Genres:</span> {(typeof extraInfo.genres === "array" ? extraInfo.genres.join(", ") : extraInfo.genres || "")}</p>
+        <p><span>Studios:</span> {(typeof extraInfo.studios === "array" ? extraInfo.studios.join(", ") : extraInfo.studios || "")}</p>
+        <p><span>Producers:</span> {(typeof extraInfo.producers === "array" ? extraInfo.producers.join(", ") : extraInfo.producers || "")}</p>
 
     </div>
 

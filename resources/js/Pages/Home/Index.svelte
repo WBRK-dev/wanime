@@ -17,20 +17,21 @@
     export let top10 = [];
     export let topAiring = [];
     export let genres = [];
+    export let routes = {};
 
 </script>
 
 <Layout padding={false}>
 
-    <Spotlight animes={spotlight} />
+    <Spotlight animes={spotlight} routes={routes} />
     
     <div class="wrapper">
 
         {#if watchlist && watchlist.length}
-            <AnimeGrid title={"Watching"} animes={watchlist.map(anime => { return {id: anime.animeId, anime: anime.anime, currentEpisode: anime.episode + 1}; })} isWatchCard={true} />
+            <AnimeGrid title={"Watching"} animes={watchlist.map(anime => { return {id: anime.animeId, anime: anime.anime, currentEpisode: anime.episode + 1}; })} url={routes["anime-watch"]} />
         {/if}
 
-        <AnimeGrid title={"New Episodes"} animes={latest} />
+        <AnimeGrid title={"New Episodes"} animes={latest} url={routes["anime-show"]} />
 
         <div id="reviews">
             <h3>Reviews</h3>
@@ -58,12 +59,12 @@
             {/if}
         </div>
 
-        <AnimeGrid title={"Popular"} animes={topAiring} />
-        <AnimeGrid title={"Trending"} animes={trending} />
+        <AnimeGrid title={"Popular"} animes={topAiring} url={routes["anime-show"]} />
+        <AnimeGrid title={"Trending"} animes={trending} url={routes["anime-show"]} />
 
-        <EstimatedEpisodes episodes={estimatedEpisodes} />
+        <EstimatedEpisodes episodes={estimatedEpisodes} url={routes["anime-show"]} />
 
-        <AnimeGrid title={"Top Upcoming"} animes={topUpcoming} />
+        <AnimeGrid title={"Top Upcoming"} animes={topUpcoming} url={routes["anime-show"]} />
 
     </div>
 </Layout>

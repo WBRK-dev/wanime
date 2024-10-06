@@ -28,7 +28,11 @@ class HomeController extends Controller
             "topUpcoming" => $anime["topUpcomingAnimes"],
             "top10" => $anime["top10Animes"],
             "topAiring" => $anime["topAiringAnimes"],
-            "genres" => $anime["genres"]
+            "genres" => $anime["genres"],
+            "routes" => [
+                "anime-show" => route("anime.show"),
+                "anime-watch" => route("anime.watch"),
+            ]
         ]);
     }
 

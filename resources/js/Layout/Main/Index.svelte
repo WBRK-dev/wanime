@@ -9,6 +9,10 @@
 
 </script>
 
+<svelte:head>
+    <title>WAnime - Home</title>
+</svelte:head>
+
 <main class:relative={enablePosRelative}>
     <Navbar/>
 

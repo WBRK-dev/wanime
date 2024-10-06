@@ -4,8 +4,8 @@
 
     export let title = '';
     export let animes = [];
-    export let isWatchCard = false;
     export let oneRow = true;
+    export let url = "";
 
 </script>
 
@@ -16,7 +16,7 @@
     <div class="grid">
 
         {#each animes as anime}
-            <div class="animecard-wrapper"><AnimeCard anime={anime} isWatchCard={isWatchCard} /></div>
+            <div class="animecard-wrapper"><AnimeCard anime={anime} url={url} /></div>
         {/each}
 
     </div>
