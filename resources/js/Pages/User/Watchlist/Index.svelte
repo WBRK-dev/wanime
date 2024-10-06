@@ -8,6 +8,7 @@
     export let animes = [];
     export let user;
     export let selectedStatus;
+    export let routes = {};
 
 </script>
 
@@ -36,7 +37,7 @@
 
         <div class="watchlist-anime-wrapper max-width"><div class="content">
 
-            <AnimeGrid animes={animes.data} oneRow={false}/>
+            <AnimeGrid animes={animes.data} oneRow={false} url={routes["anime-show"]}/>
 
         </div></div>
 

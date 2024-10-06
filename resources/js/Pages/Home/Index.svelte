@@ -43,7 +43,7 @@
                                 <i class="fi fi-sr-user"></i>
                                 <p>{review.user.name}</p>
                             </div>
-                            <a href="/anime?id={review.anime.id}" class="anime" use:inertia><p>{review.anime.title}</p></a>
+                            <a href="{routes["anime-show"]}?id={review.anime.id}" class="anime" use:inertia><p>{review.anime.title}</p></a>
                             <div class="stars">
                                 <i class="fi fi-sr-star"></i>
                                 <i class="fi fi-sr-star"></i>
@@ -62,7 +62,7 @@
         <AnimeGrid title={"Popular"} animes={topAiring} url={routes["anime-show"]} />
         <AnimeGrid title={"Trending"} animes={trending} url={routes["anime-show"]} />
 
-        <EstimatedEpisodes episodes={estimatedEpisodes} url={routes["anime-show"]} />
+        <!-- <EstimatedEpisodes episodes={estimatedEpisodes} url={routes["anime-show"]} /> -->
 
         <AnimeGrid title={"Top Upcoming"} animes={topUpcoming} url={routes["anime-show"]} />
 

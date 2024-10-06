@@ -24,6 +24,7 @@ class AnimeController extends Controller
             "recommendedAnime" => $anime["recommendedAnimes"],
             "routes" => [
                 "anime-show" => route("anime.show"),
+                "anime-watch" => route("anime.watch"),
             ]
         ]);
     }

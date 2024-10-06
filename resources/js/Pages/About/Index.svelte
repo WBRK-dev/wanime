@@ -31,7 +31,7 @@
         <h3 class="center" style="margin: .5rem 0;">{anime.info.name}</h3>
 
         <div class="center" style="flex-direction: row;">
-            <Button href={`/watch?id=${anime.info.id}`} title={"Watch"} icon={"sr-play-circle"} style={"rounded"} />
+            <Button href={`${routes["anime-watch"]}?id=${anime.info.id}`} title={"Watch"} icon={"sr-play-circle"} style={"rounded"} />
 
             {#if $page?.props?.auth?.user}
                 <WatchlistButton anime={{id: anime.info.id, poster: anime.info.poster, title: anime.info.name}} theme={"secondary"} initialStatus={watchlistStatus} />

@@ -23,7 +23,10 @@ class UserController extends Controller
         return Inertia::render("User/Watchlist/Index", [
             "animes" => $watchlist,
             "user" => $user,
-            "selectedStatus" => $selectedStatus
+            "selectedStatus" => $selectedStatus,
+            "routes" => [
+                "anime-show" => route("anime.show"),
+            ]
         ]);
     }
 }
