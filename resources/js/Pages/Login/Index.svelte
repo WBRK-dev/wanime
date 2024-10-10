@@ -3,13 +3,14 @@
     import Layout from "../../Layout/Main/Index.svelte";
 
     import { page, useForm } from '@inertiajs/svelte';
-  
+
     let form = useForm({
         email: null,
         password: null,
+        remember: null,
     });
     let showPassword = false;
-  
+
     const handleSubmit = async () => {
         $form.clearErrors();
         $form.post($page.props.common.routes.login, {onSuccess: () => console.log("test1")});
@@ -25,7 +26,7 @@
         {#if $form.errors.email}
             <p class="form-error">{$form.errors.email}</p>
         {/if}
-    
+
         <div class="input-wrapper">
             {#if showPassword}
                 <input name="password" bind:value={$form.password} type="text" placeholder="Password" required>
@@ -38,7 +39,12 @@
         {#if $form.errors.password}
             <p class="form-error">{$form.errors.password}</p>
         {/if}
-    
+
+        <div class="input-wrapper" style="display: block">
+            <input type="checkbox" id="remember" bind:checked={$form.remember}>
+            <label for="remember">Remember me</label>
+        </div>
+
         <button class="submit" type="submit" disabled={$form.processing}><p>Submit</p></button>
     </form>
 
@@ -76,7 +82,7 @@
         transition: outline 200ms;
     }
     .input-wrapper > input {
-        width: 1rem; 
+        width: 1rem;
         flex-grow: 1;
 
         border-top-right-radius: 0;
@@ -157,6 +163,10 @@
 
     p.form-error {
         color: var(--danger-bg);
+    }
+
+    .input-wrapper input[type="checkbox"] {
+        width: unset;
     }
 
 </style>
