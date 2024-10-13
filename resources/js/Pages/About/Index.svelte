@@ -34,7 +34,7 @@
             <Button href={`${routes["anime-watch"]}?id=${anime.info.id}`} title={"Watch"} icon={"sr-play-circle"} style={"rounded"} />
 
             {#if $page?.props?.auth?.user}
-                <WatchlistButton anime={{id: anime.info.id, poster: anime.info.poster, title: anime.info.name}} theme={"secondary"} initialStatus={watchlistStatus} />
+                <WatchlistButton anime={{id: anime.info.id, poster: anime.info.poster, title: anime.info.name}} route={routes["anime-update-watchlist"]} theme={"secondary"} initialStatus={watchlistStatus} />
             {/if}
         </div>
 

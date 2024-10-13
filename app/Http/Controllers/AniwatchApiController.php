@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class AniwatchApiController extends Controller
 {
@@ -16,6 +17,7 @@ class AniwatchApiController extends Controller
         $response = Http::get(config("aniwatchapi.url") . $url);
         $statusCode = $response->getStatusCode();
         if ($statusCode < 200 || $statusCode >= 300) {
+            Log::error("Aniwatch API returned status code $statusCode for URL $url");
             abort(500);
         }
 

@@ -25,6 +25,7 @@ class AnimeController extends Controller
             "routes" => [
                 "anime-show" => route("anime.show"),
                 "anime-watch" => route("anime.watch"),
+                "anime-update-watchlist" => route("api.anime.watchlist.put", ["animeId" => $request->input("id")])
             ]
         ]);
     }
@@ -46,6 +47,9 @@ class AnimeController extends Controller
             "recommendedAnime" => $anime["recommendedAnimes"],
             "apiUrl" => config("aniwatchapi.frontend_url"),
             "selectedEpisodeIndex" => $watchlist?->episode ?? 0,
+            "routes" => [
+                "anime-update-episode" => route("api.anime.episode.put", ["animeId" => $request->input("id")]),
+            ]
         ]);
 
     }

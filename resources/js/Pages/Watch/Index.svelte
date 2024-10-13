@@ -15,7 +15,8 @@
     export let recommendAnime = [];
     export let apiUrl = "";
     export let selectedEpisodeIndex = 0;
-    
+    export let routes = {};
+
     let currentEpisode = 0;
     let episodeServers = {sub: [], dub: [], raw: []};
     let currentEpisodeVideoSource;
@@ -54,7 +55,7 @@
         else if (episodeServers[selectedCategory].length > 0) loadServer(episodeServers[selectedCategory][0].serverName, selectedCategory);
         else if (episodeServers["sub"].length > 0) loadServer(episodeServers["sub"][0].serverName, "sub");
 
-        fetch(`${$page.props.app_url}/api/watchlist/${anime.info.id}/episode`, {
+        fetch(routes["anime-update-episode"], {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

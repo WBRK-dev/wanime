@@ -7,6 +7,7 @@
     import Button from "./Button.svelte";
 
     export let anime;
+    export let route;
     export let style = "rounded";
     export let theme = "primary";
     export let dropdownPos = "bottom-right";
@@ -25,7 +26,7 @@
         status = selectedStatus;
         showDropdown = false;
 
-        fetch(`/api/watchlist/${anime.id}`, {
+        fetch(route, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -139,7 +140,5 @@
 
         background-color: var(--body-tertiary-bg);
     }
-
-    
 
 </style>
