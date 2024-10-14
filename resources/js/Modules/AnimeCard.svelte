@@ -96,6 +96,7 @@
         padding: .125rem .4rem;
 
         background-color: rgba(0, 0, 0, 0.651);
+        backdrop-filter: blur(4px);
     }
 
     .episodes .episode i {
