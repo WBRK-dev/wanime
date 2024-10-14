@@ -1,0 +1,21 @@
+{
+    "name": "WAnime",
+    "short_name": "WAnime",
+    "theme_color": "#1c1c1c",
+    "background_color": "#1c1c1c",
+    "display": "standalone",
+    "scope": "/anime",
+    "start_url": "/anime",
+    "icons": [
+        {
+            "src": "/res/images/favicon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/res/images/favicon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
